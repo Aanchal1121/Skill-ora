@@ -1,0 +1,251 @@
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const DB_FILE = path.join(__dirname, 'database.json');
+
+const initialDbData = {
+  studentProfile: {
+    id: "STU-8921",
+    name: "Aarav Sharma",
+    email: "aarav.sharma@college.edu.in",
+    college: "Institute of Technology, Jaipur",
+    tier: "Tier 2 College",
+    branch: "Computer Science & Engineering",
+    year: "3rd Year (Semester 6)",
+    cgpa: 7.8,
+    backlogHistory: 0,
+    targetRole: "Full Stack Developer",
+    targetCompanyType: "Tier-1 Tech / Product Startup",
+    skills: ["HTML/CSS", "JavaScript", "React", "Python", "SQL", "Git"],
+    targetSkills: ["Node.js", "Express", "Docker", "System Design", "TypeScript", "Redis"],
+    employabilityScore: 745,
+    maxScore: 900,
+    scoreBreakdown: {
+      academics: 195, // max 225
+      technicalDSA: 220, // max 270
+      projects: 150, // max 180
+      softSkills: 105, // max 135
+      certifications: 75 // max 90
+    },
+    weeklyLogs: [
+      { week: "W1 (Aug 1)", score: 620, dsa: 55, projects: 50, comm: 60 },
+      { week: "W2 (Aug 8)", score: 650, dsa: 60, projects: 55, comm: 65 },
+      { week: "W3 (Aug 15)", score: 680, dsa: 65, projects: 65, comm: 70 },
+      { week: "W4 (Aug 22)", score: 710, dsa: 72, projects: 70, comm: 72 },
+      { week: "W5 (Aug 29)", score: 730, dsa: 75, projects: 75, comm: 78 },
+      { week: "W6 (Current)", score: 745, dsa: 80, projects: 78, comm: 82 }
+    ],
+    peerPercentiles: {
+      dsaPercentile: 68,
+      projectPercentile: 82,
+      communicationPercentile: 74,
+      overallPercentile: 76
+    },
+    verifiedBadges: [
+      { id: "b1", title: "React Basics", issuer: "NPTEL / IIT Kharagpur", date: "2024-05-10", hash: "0x89a...f42", status: "Verified" },
+      { id: "b2", title: "SQL for Data Analytics", issuer: "SWAYAM", date: "2024-08-15", hash: "0x72b...c91", status: "Verified" }
+    ]
+  },
+  govtSchemes: [
+    {
+      id: "SCH-101",
+      title: "PM Internship Scheme 2024-25",
+      provider: "Ministry of Corporate Affairs (Govt. of India)",
+      type: "Government Scheme",
+      stipend: "₹5,000 / month + ₹6,000 one-time grant",
+      duration: "12 Months",
+      location: "Pan-India / State Offices",
+      eligibility: {
+        minCgpa: 6.0,
+        branches: ["Computer Science & Engineering", "Information Technology", "Electronics", "Mechanical", "Civil"],
+        maxBacklogs: 1,
+        allowedYears: ["3rd Year (Semester 6)", "4th Year (Semester 8)", "Passed Out"]
+      },
+      skillsRequired: ["Basic Computer Skills", "Python / Web Basics", "Communication"],
+      applyUrl: "https://pminternship.mca.gov.in",
+      trustScore: 98,
+      trustStatus: "Verified Govt Scheme",
+      redFlags: []
+    },
+    {
+      id: "SCH-102",
+      title: "AICTE TULIP (The Urban Learning Internship Program)",
+      provider: "AICTE & Ministry of Housing and Urban Affairs",
+      type: "Smart Cities Internship",
+      stipend: "₹12,000 - ₹18,000 / month",
+      duration: "6 Months",
+      location: "Jaipur Smart City Ltd / Delhi / Pune",
+      eligibility: {
+        minCgpa: 6.5,
+        branches: ["Computer Science & Engineering", "Information Technology", "Civil", "Electrical"],
+        maxBacklogs: 0,
+        allowedYears: ["3rd Year (Semester 6)", "4th Year (Semester 8)"]
+      },
+      skillsRequired: ["GIS / Python", "Data Visualization", "Web Development"],
+      applyUrl: "https://internship.aicte-india.org",
+      trustScore: 96,
+      trustStatus: "Verified AICTE Portal",
+      redFlags: []
+    },
+    {
+      id: "SCH-103",
+      title: "National Career Service (NCS) Software Apprentice",
+      provider: "Ministry of Labour & Employment",
+      type: "Apprenticeship",
+      stipend: "₹15,000 / month",
+      duration: "1 Year",
+      location: "Hybrid (Noida / Remote)",
+      eligibility: {
+        minCgpa: 5.5,
+        branches: ["All Engineering Branches", "BCA", "B.Sc CS"],
+        maxBacklogs: 2,
+        allowedYears: ["3rd Year (Semester 6)", "4th Year (Semester 8)"]
+      },
+      skillsRequired: ["JavaScript", "HTML/CSS", "Database Querying"],
+      applyUrl: "https://ncs.gov.in",
+      trustScore: 94,
+      trustStatus: "Verified Govt Portal",
+      redFlags: []
+    },
+    {
+      id: "SCH-104",
+      title: "Suspect Entry: 'Remote AI Prompt Engineer Intern'",
+      provider: "Unverified Third Party Agency",
+      type: "Private Internship",
+      stipend: "Unpaid / Ask for ₹1,500 Registration Fee",
+      duration: "Undefined / Flexible",
+      location: "Remote",
+      eligibility: {
+        minCgpa: 0,
+        branches: ["All"],
+        maxBacklogs: 10,
+        allowedYears: ["All"]
+      },
+      skillsRequired: ["None"],
+      applyUrl: "#",
+      trustScore: 12,
+      trustStatus: "FRAUD WARNING (Red Flagged)",
+      redFlags: [
+        "Asks candidates to pay registration/training fee before joining",
+        "Vague work responsibilities and undefined contract duration",
+        "Unrealistic promises of high package without interview process"
+      ]
+    }
+  ],
+  freeCourses: [
+    {
+      id: "CRS-01",
+      title: "NPTEL: Programming, Data Structures & Algorithms in Python",
+      provider: "IIT Madras / NPTEL (Swayam)",
+      cost: "Free Learning (Optional ₹1000 Exam Fee)",
+      duration: "8 Weeks",
+      rating: 4.8,
+      tags: ["Data Structures", "Python", "Algorithms"],
+      url: "https://onlinecourses.nptel.ac.in",
+      roiComparison: {
+        paidAlternativeCost: "₹14,999 (Private EdTech)",
+        expectedSalaryIncrease: "+ ₹2.5 LPA",
+        recommendation: "Highly Recommended (Top Free IIT Quality)"
+      }
+    },
+    {
+      id: "CRS-02",
+      title: "Fullstack Web Development with React & Node.js",
+      provider: "freeCodeCamp / YouTube Full Course",
+      cost: "100% Free",
+      duration: "12 Weeks (Self-paced)",
+      rating: 4.9,
+      tags: ["React", "Node.js", "Express", "MongoDB"],
+      url: "https://youtube.com",
+      roiComparison: {
+        paidAlternativeCost: "₹29,000 (Bootcamp)",
+        expectedSalaryIncrease: "+ ₹3.8 LPA",
+        recommendation: "Recommended Hands-on Free Resource"
+      }
+    },
+    {
+      id: "CRS-03",
+      title: "Docker & Containerization for Beginners",
+      provider: "TechWorld with Nana / Open Source",
+      cost: "100% Free",
+      duration: "3 Weeks",
+      rating: 4.9,
+      tags: ["Docker", "DevOps", "CI/CD"],
+      url: "https://youtube.com",
+      roiComparison: {
+        paidAlternativeCost: "₹8,500",
+        expectedSalaryIncrease: "+ ₹1.8 LPA",
+        recommendation: "Must-learn DevOps Essential"
+      }
+    }
+  ],
+  microProjects: [
+    {
+      id: "PRJ-01",
+      title: "E-Commerce REST API with Node, Express & Redis Cache",
+      domain: "Full Stack & Backend",
+      difficulty: "Intermediate",
+      timeEstimate: "3-4 Days",
+      skillsGained: ["Node.js", "Express", "Redis", "JWT Auth"],
+      githubStarter: "https://github.com/example/node-express-starter",
+      employabilityBoost: "+25 Points to Project Score"
+    },
+    {
+      id: "PRJ-02",
+      title: "Real-time AI Chat & Resume Gap Checker App",
+      domain: "Web & AI Integration",
+      difficulty: "Advanced",
+      timeEstimate: "4-5 Days",
+      skillsGained: ["React", "Vite", "OpenAI/Claude API", "TailwindCSS"],
+      githubStarter: "https://github.com/example/react-ai-starter",
+      employabilityBoost: "+35 Points to Project Score"
+    }
+  ],
+  tpoAnalytics: {
+    collegeName: "Institute of Technology, Jaipur",
+    academicYear: "2024-2025",
+    totalStudents: 480,
+    placementEligible: 412,
+    placedCount: 284,
+    placementRate: "68.9%",
+    avgPackage: "₹6.8 LPA",
+    highestPackage: "₹24 LPA",
+    atRiskStudents: [
+      { name: "Rahul Verma", branch: "CSE", cgpa: 6.1, backlogs: 1, score: 510, mainGap: "DSA & System Design" },
+      { name: "Priya Kumawat", branch: "ECE", cgpa: 6.4, backlogs: 0, score: 540, mainGap: "Core Web Dev & Soft Skills" },
+      { name: "Vikram Singh", branch: "ME", cgpa: 5.9, backlogs: 2, score: 480, mainGap: "Basic Coding & Aptitude" }
+    ],
+    departmentSkillHeatmap: [
+      { dept: "Computer Science", dsa: "High (78%)", webDev: "High (82%)", devOps: "Low (34%)", softSkills: "Medium (65%)" },
+      { dept: "Information Tech", dsa: "Medium (66%)", webDev: "High (79%)", devOps: "Low (28%)", softSkills: "Medium (68%)" },
+      { dept: "Electronics & Comm", dsa: "Low (42%)", webDev: "Medium (51%)", devOps: "Low (18%)", softSkills: "Medium (60%)" }
+    ]
+  }
+};
+
+export function getDb() {
+  if (!fs.existsSync(DB_FILE)) {
+    fs.writeFileSync(DB_FILE, JSON.stringify(initialDbData, null, 2), 'utf-8');
+    return initialDbData;
+  }
+  try {
+    const raw = fs.readFileSync(DB_FILE, 'utf-8');
+    return JSON.parse(raw);
+  } catch (err) {
+    console.error('Error reading database file, using fallback:', err);
+    return initialDbData;
+  }
+}
+
+export function saveDb(data) {
+  try {
+    fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2), 'utf-8');
+    return true;
+  } catch (err) {
+    console.error('Error writing database file:', err);
+    return false;
+  }
+}
