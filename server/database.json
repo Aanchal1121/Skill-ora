@@ -1,23 +1,21 @@
 {
   "studentProfile": {
-    "id": "STU-8921",
-    "name": "Aarav Sharma",
-    "email": "aarav.sharma@college.edu.in",
-    "college": "Institute of Technology, Jaipur",
+    "id": "STU-7821",
+    "name": "Ananya Roy",
+    "email": "aanchal.sharma@college.edu.in",
+    "college": "Institute of Technology & Engineering",
     "tier": "Tier 2 College",
     "branch": "Computer Science & Engineering",
     "year": "3rd Year (Semester 6)",
     "cgpa": 7.8,
     "backlogHistory": 0,
-    "targetRole": "Full Stack Developer",
+    "targetRole": "Java Backend Developer",
     "targetCompanyType": "Tier-1 Tech / Product Startup",
     "skills": [
-      "HTML/CSS",
-      "JavaScript",
-      "React",
-      "Python",
+      "Java",
+      "C++",
       "SQL",
-      "Git"
+      "HTML"
     ],
     "targetSkills": [
       "Node.js",
@@ -27,7 +25,7 @@
       "TypeScript",
       "Redis"
     ],
-    "employabilityScore": 745,
+    "employabilityScore": 755,
     "maxScore": 900,
     "scoreBreakdown": {
       "academics": 195,
@@ -103,7 +101,18 @@
         "hash": "0x72b...c91",
         "status": "Verified"
       }
-    ]
+    ],
+    "skillsToImprove": [
+      "Spring Boot",
+      "REST APIs",
+      "Git"
+    ],
+    "completedLearningTasks": 6,
+    "completedProjects": 2,
+    "submittedApplications": 8,
+    "weeklyProgress": "65%",
+    "phone": "+91 98765 43210",
+    "avatarUrl": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&auto=format&fit=crop&q=80"
   },
   "govtSchemes": [
     {

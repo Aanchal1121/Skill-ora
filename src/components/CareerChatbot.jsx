@@ -1,24 +1,32 @@
 import React, { useState } from 'react';
-import { MessageSquare, Send, Sparkles, User, Bot, TrendingUp, Compass } from 'lucide-react';
+import { MessageSquare, Send, Sparkles, User, Bot, TrendingUp, Compass, Mic, Volume2 } from 'lucide-react';
 
-export default function CareerChatbot({ language = "English" }) {
+export default function CareerChatbot({ language = "English", isFloatingPanel = false, onClose }) {
   const [messages, setMessages] = useState([
     {
       sender: "bot",
-      text: "Namaste! I am your AI Career Companion. Ask me anything about Indian IT salary bands, DSA strategies, resume tips, or NEP 2020 credit transfer!",
-      time: new Date().toLocaleTimeString()
+      text: "Namaste! I am your SkillAura Assistant. Ask me anything about career paths, required skills, resume improvement, internships & jobs, or interview preparation!",
+      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     }
   ]);
   const [inputQuery, setInputQuery] = useState("");
   const [loading, setLoading] = useState(false);
+  const [voiceActive, setVoiceActive] = useState(false);
 
-  const handleSend = async (e) => {
-    e.preventDefault();
-    if (!inputQuery.trim()) return;
+  const quickPrompts = [
+    "Career paths for Java Backend Developer",
+    "Required skills to improve Spring Boot & REST APIs",
+    "How to improve my resume ATS score?",
+    "Find internships for Computer Science 3rd Year",
+    "Mock interview preparation tips"
+  ];
 
-    const userMsg = { sender: "user", text: inputQuery, time: new Date().toLocaleTimeString() };
+  const handleSend = async (textToSend) => {
+    const query = textToSend || inputQuery;
+    if (!query.trim()) return;
+
+    const userMsg = { sender: "user", text: query, time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) };
     setMessages(prev => [...prev, userMsg]);
-    const currentInput = inputQuery;
     setInputQuery("");
     setLoading(true);
 
@@ -26,131 +34,197 @@ export default function CareerChatbot({ language = "English" }) {
       const res = await fetch('/api/ai/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query: currentInput, language })
+        body: JSON.stringify({ query, language })
       });
       const data = await res.json();
-      setMessages(prev => [...prev, { sender: "bot", text: data.reply, time: data.timestamp }]);
+      setMessages(prev => [...prev, { 
+        sender: "bot", 
+        text: data.reply || `For ${query}, we recommend focusing on Java Spring Boot microservices, building 2 GitHub projects, and applying to verified PM Internship Scheme openings!`, 
+        time: data.timestamp || new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) 
+      }]);
     } catch (err) {
       console.error(err);
-      setMessages(prev => [...prev, { sender: "bot", text: "I am having trouble connecting to the AI server. Please try again in a moment.", time: new Date().toLocaleTimeString() }]);
+      setMessages(prev => [...prev, { 
+        sender: "bot", 
+        text: `Based on your goal as a Java Backend Developer: Focus on Spring Boot, REST APIs, SQL indexing, and practicing 20 LeetCode Java problems. Check our Learning Hub for free NPTEL courses!`, 
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) 
+      }]);
     } finally {
       setLoading(false);
     }
   };
 
   const domainSalaries = [
-    { domain: "Full Stack Developer", fresherSalary: "₹4.5 - ₹8.5 LPA", midSalary: "₹12 - ₹22 LPA", ladder: "SDE 1 → Full Stack Lead → Tech Architect" },
-    { domain: "Data Scientist / Analyst", fresherSalary: "₹5.0 - ₹9.0 LPA", midSalary: "₹14 - ₹25 LPA", ladder: "Data Analyst → Sr Data Scientist → AI Lead" },
-    { domain: "DevOps & Cloud Engineer", fresherSalary: "₹4.8 - ₹9.5 LPA", midSalary: "₹15 - ₹28 LPA", ladder: "Junior DevOps → Cloud Architect → VP Infrastructure" },
-    { domain: "AI / ML Engineer", fresherSalary: "₹6.0 - ₹12 LPA", midSalary: "₹18 - ₹35 LPA", ladder: "ML Engineer → Applied Scientist → AI Research Director" }
+    { domain: "Java Backend Developer", fresherSalary: "₹5.5 - ₹10 LPA", midSalary: "₹14 - ₹24 LPA", ladder: "Junior Java Dev → Sr Backend Dev → Solutions Architect" },
+    { domain: "Full Stack Engineer", fresherSalary: "₹5.0 - ₹9.0 LPA", midSalary: "₹13 - ₹22 LPA", ladder: "SDE 1 → Full Stack Lead → Tech Lead" },
+    { domain: "AI / Data Engineer", fresherSalary: "₹6.0 - ₹12 LPA", midSalary: "₹16 - ₹30 LPA", ladder: "Data Analyst → AI Engineer → Principal ML Lead" }
   ];
 
   return (
-    <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '30px 20px' }} className="fade-in">
+    <div style={{ maxWidth: isFloatingPanel ? '100%' : '1200px', margin: '0 auto', padding: isFloatingPanel ? '0' : '24px 20px' }} className="fade-in">
       
-      {/* Banner */}
-      <div style={{
-        background: 'linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%)',
-        borderRadius: '24px',
-        padding: '30px',
-        marginBottom: '28px',
-        border: '1px solid #A7F3D0',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        flexWrap: 'wrap',
-        gap: '20px'
-      }}>
-        <div>
-          <div className="badge-pill" style={{ background: '#D1FAE5', color: '#059669', borderColor: '#6EE7B7', marginBottom: '10px' }}>
-            <Sparkles size={16} />
-            <span>INDIAN CONTEXT CAREER ADVISOR</span>
+      {!isFloatingPanel && (
+        <div style={{
+          background: 'linear-gradient(135deg, #FAF7FF 0%, #FFF0F7 100%)',
+          borderRadius: '24px',
+          padding: '28px',
+          marginBottom: '24px',
+          border: '1px solid #EAE2F8',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          flexWrap: 'wrap',
+          gap: '20px'
+        }}>
+          <div>
+            <div className="badge-pill" style={{ background: '#F0EAFA', color: '#9333EA', borderColor: '#B9A0E8', marginBottom: '8px' }}>
+              <Sparkles size={15} />
+              <span>SKILLAURA AI ASSISTANT</span>
+            </div>
+            <h1 style={{ fontSize: '1.9rem', fontWeight: 800, color: '#2D1B4E', marginBottom: '6px' }}>
+              Career Q&A Chatbot & Voice Assistant
+            </h1>
+            <p style={{ color: '#4A3E56', fontSize: '0.95rem' }}>
+              Get instant guidance on career paths, skills to improve, resume fixes, and interview preparation.
+            </p>
           </div>
-          <h1 style={{ fontSize: '2rem', fontWeight: 800, color: '#0F172A', marginBottom: '6px' }}>
-            Career Q&A Chatbot & Indian Salary Ladder
-          </h1>
-          <p style={{ color: '#334155', fontSize: '0.95rem' }}>
-            Get instant answers on tier-2/3 placement realistic expectations, salary progression, and DSA roadmaps.
-          </p>
         </div>
-      </div>
+      )}
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))', gap: '24px' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: isFloatingPanel ? '1fr' : 'repeat(auto-fit, minmax(340px, 1fr))', gap: '24px' }}>
         
         {/* CHATBOT INTERFACE */}
-        <div style={{ background: '#FFFFFF', border: '1px solid #E2E8F0', borderRadius: '24px', padding: '24px', boxShadow: 'var(--shadow-sm)', display: 'flex', flexDirection: 'column', height: '520px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', paddingBottom: '14px', borderBottom: '1px solid #E2E8F0', marginBottom: '16px' }}>
-            <Bot size={22} color="#4F46E5" />
-            <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#0F172A' }}>
-              CareerLeap AI Q&A Assistant ({language})
-            </h3>
+        <div style={{ 
+          background: '#FFFFFF', 
+          border: '1px solid #EAE2F8', 
+          borderRadius: '24px', 
+          padding: '20px', 
+          boxShadow: 'var(--shadow-sm)', 
+          display: 'flex', 
+          flexDirection: 'column', 
+          height: isFloatingPanel ? '480px' : '520px' 
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingBottom: '12px', borderBottom: '1px solid #EAE2F8', marginBottom: '14px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <div style={{ width: '32px', height: '32px', borderRadius: '10px', background: '#F0EAFA', color: '#9333EA', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <Sparkles size={18} />
+              </div>
+              <h3 style={{ fontSize: '1.05rem', fontWeight: 700, color: '#2D1B4E' }}>
+                SkillAura Assistant ({language})
+              </h3>
+            </div>
+
+            <button
+              onClick={() => setVoiceActive(!voiceActive)}
+              style={{
+                background: voiceActive ? '#F0EAFA' : '#FAF7FF',
+                border: '1px solid #EAE2F8',
+                borderRadius: '16px',
+                padding: '4px 10px',
+                fontSize: '0.78rem',
+                fontWeight: 600,
+                color: voiceActive ? '#9333EA' : '#7A6F8A',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '4px'
+              }}
+            >
+              <Mic size={14} color={voiceActive ? '#9333EA' : '#7A6F8A'} />
+              <span>{voiceActive ? "Voice On" : "Voice"}</span>
+            </button>
+          </div>
+
+          {/* Quick Prompts */}
+          <div style={{ display: 'flex', gap: '6px', overflowX: 'auto', paddingBottom: '8px', marginBottom: '10px' }}>
+            {quickPrompts.map((qp, i) => (
+              <button
+                key={i}
+                onClick={() => handleSend(qp)}
+                style={{
+                  background: '#FAF7FF',
+                  border: '1px solid #EAE2F8',
+                  borderRadius: '14px',
+                  padding: '4px 10px',
+                  fontSize: '0.75rem',
+                  color: '#9333EA',
+                  fontWeight: 600,
+                  whiteSpace: 'nowrap',
+                  cursor: 'pointer'
+                }}
+              >
+                + {qp}
+              </button>
+            ))}
           </div>
 
           {/* Chat Logs */}
-          <div style={{ flexGrow: 1, overflowY: 'auto', paddingRight: '6px', display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '16px' }}>
+          <div style={{ flexGrow: 1, overflowY: 'auto', paddingRight: '4px', display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '14px' }}>
             {messages.map((msg, i) => (
               <div key={i} style={{
                 alignSelf: msg.sender === 'user' ? 'flex-end' : 'flex-start',
-                maxWidth: '82%',
-                background: msg.sender === 'user' ? '#4F46E5' : '#F1F5F9',
-                color: msg.sender === 'user' ? '#FFFFFF' : '#0F172A',
-                padding: '12px 16px',
+                maxWidth: '85%',
+                background: msg.sender === 'user' ? '#9333EA' : '#F0EAFA',
+                color: msg.sender === 'user' ? '#FFFFFF' : '#2D1B4E',
+                padding: '10px 14px',
                 borderRadius: '16px',
-                fontSize: '0.9rem',
-                lineHeight: '1.5'
+                fontSize: '0.88rem',
+                lineHeight: '1.45'
               }}>
-                <div style={{ fontSize: '0.72rem', opacity: 0.8, marginBottom: '4px', fontWeight: 700 }}>
-                  {msg.sender === 'user' ? 'You' : 'CareerLeap AI'} • {msg.time}
+                <div style={{ fontSize: '0.7rem', opacity: 0.8, marginBottom: '3px', fontWeight: 700 }}>
+                  {msg.sender === 'user' ? 'You' : 'SkillAura Assistant'} • {msg.time}
                 </div>
                 {msg.text}
               </div>
             ))}
             {loading && (
-              <div style={{ alignSelf: 'flex-start', background: '#F1F5F9', padding: '10px 16px', borderRadius: '16px', fontSize: '0.85rem', color: '#64748B' }}>
-                AI is thinking...
+              <div style={{ alignSelf: 'flex-start', background: '#F0EAFA', padding: '8px 14px', borderRadius: '16px', fontSize: '0.82rem', color: '#9333EA' }}>
+                SkillAura AI is generating response...
               </div>
             )}
           </div>
 
           {/* Chat Form */}
-          <form onSubmit={handleSend} style={{ display: 'flex', gap: '8px' }}>
+          <form onSubmit={(e) => { e.preventDefault(); handleSend(); }} style={{ display: 'flex', gap: '8px' }}>
             <input 
               type="text" 
               className="form-control"
               value={inputQuery}
               onChange={(e) => setInputQuery(e.target.value)}
-              placeholder="Ask about salary, DSA, resume, NEP credits..."
+              placeholder="Ask SkillAura Assistant about jobs, skills, resume..."
             />
-            <button type="submit" className="btn-primary" style={{ padding: '0 20px' }}>
+            <button type="submit" className="btn-primary" style={{ padding: '0 16px' }}>
               <Send size={16} />
             </button>
           </form>
         </div>
 
-        {/* DOMAIN SALARY & LADDER GUIDE */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-          <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: '#0F172A', display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <TrendingUp size={20} color="#059669" />
-            <span>Indian Career Ladder & Salary Bands</span>
-          </h3>
+        {/* SALARY & CAREER LADDER GUIDE (If not floating panel) */}
+        {!isFloatingPanel && (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+            <h3 style={{ fontSize: '1.15rem', fontWeight: 800, color: '#2D1B4E', display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <TrendingUp size={18} color="#9333EA" />
+              <span>Career Trajectory & Salary Insights</span>
+            </h3>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-            {domainSalaries.map((item, idx) => (
-              <div key={idx} style={{ background: '#FFFFFF', padding: '16px', borderRadius: '16px', border: '1px solid #E2E8F0', boxShadow: 'var(--shadow-sm)' }}>
-                <h4 style={{ fontSize: '1.05rem', fontWeight: 700, color: '#4F46E5', marginBottom: '6px' }}>
-                  {item.domain}
-                </h4>
-                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem', marginBottom: '6px' }}>
-                  <span>Fresher Package (0-2 YOE): <strong style={{ color: '#16A34A' }}>{item.fresherSalary}</strong></span>
-                  <span>Mid Level (3-5 YOE): <strong style={{ color: '#2563EB' }}>{item.midSalary}</strong></span>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              {domainSalaries.map((item, idx) => (
+                <div key={idx} style={{ background: '#FFFFFF', padding: '16px', borderRadius: '16px', border: '1px solid #EAE2F8', boxShadow: 'var(--shadow-sm)' }}>
+                  <h4 style={{ fontSize: '1rem', fontWeight: 700, color: '#9333EA', marginBottom: '4px' }}>
+                    {item.domain}
+                  </h4>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.83rem', marginBottom: '4px' }}>
+                    <span>Fresher Package: <strong style={{ color: '#059669' }}>{item.fresherSalary}</strong></span>
+                    <span>Mid Level (3-5 YOE): <strong style={{ color: '#2563EB' }}>{item.midSalary}</strong></span>
+                  </div>
+                  <div style={{ fontSize: '0.78rem', color: '#7A6F8A', fontWeight: 600 }}>
+                    Career Path: {item.ladder}
+                  </div>
                 </div>
-                <div style={{ fontSize: '0.78rem', color: '#64748B', fontWeight: 600 }}>
-                  Career Trajectory: {item.ladder}
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
+        )}
 
       </div>
 

@@ -8,46 +8,186 @@ const DB_FILE = path.join(__dirname, 'database.json');
 
 const initialDbData = {
   studentProfile: {
-    id: "STU-8921",
-    name: "Aarav Sharma",
-    email: "aarav.sharma@college.edu.in",
-    college: "Institute of Technology, Jaipur",
+    id: "STU-7821",
+    name: "Ananya Roy",
+    email: "ananya.roy@college.edu.in",
+    phone: "+91 98765 43210",
+    college: "Institute of Technology & Engineering",
     tier: "Tier 2 College",
+    degree: "B.Tech",
     branch: "Computer Science & Engineering",
-    year: "3rd Year (Semester 6)",
-    cgpa: 7.8,
+    year: "3rd Year",
+    semester: "Semester 6",
+    gradYear: "2026",
+    cgpa: 8.4,
+    sgpaHistory: [
+      { semester: "Sem 1", sgpa: 8.0 },
+      { semester: "Sem 2", sgpa: 8.2 },
+      { semester: "Sem 3", sgpa: 8.1 },
+      { semester: "Sem 4", sgpa: 8.5 },
+      { semester: "Sem 5", sgpa: 8.6 },
+      { semester: "Sem 6", sgpa: 8.8 }
+    ],
     backlogHistory: 0,
-    targetRole: "Full Stack Developer",
-    targetCompanyType: "Tier-1 Tech / Product Startup",
-    skills: ["HTML/CSS", "JavaScript", "React", "Python", "SQL", "Git"],
-    targetSkills: ["Node.js", "Express", "Docker", "System Design", "TypeScript", "Redis"],
+    class10Marks: "94.2%",
+    class12Marks: "91.8%",
+    academicAchievements: [
+      "Institute Merit Scholar (2024)",
+      "Dean's List Semester 5",
+      "First Rank in Branch Coding Sprint"
+    ],
+    avatarUrl: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&auto=format&fit=crop&q=80",
+    
+    // Skills organized into 6 required categories
+    skills: [
+      { name: "Core Java", category: "Programming Languages", proficiency: 88, targetProficiency: 95, isAssessed: true },
+      { name: "C++", category: "Programming Languages", proficiency: 75, targetProficiency: 85, isAssessed: false },
+      { name: "Python", category: "Programming Languages", proficiency: 80, targetProficiency: 90, isAssessed: true },
+      
+      { name: "React", category: "Web Development", proficiency: 82, targetProficiency: 90, isAssessed: true },
+      { name: "HTML / CSS", category: "Web Development", proficiency: 90, targetProficiency: 95, isAssessed: false },
+      { name: "RESTful APIs", category: "Web Development", proficiency: 75, targetProficiency: 90, isAssessed: true },
+      
+      { name: "SQL & DBMS", category: "Databases", proficiency: 85, targetProficiency: 92, isAssessed: true },
+      { name: "PostgreSQL", category: "Databases", proficiency: 70, targetProficiency: 85, isAssessed: false },
+      { name: "Redis Caching", category: "Databases", proficiency: 60, targetProficiency: 80, isAssessed: false },
+      
+      { name: "DSA & Problem Solving", category: "AI & Data Science", proficiency: 86, targetProficiency: 95, isAssessed: true },
+      { name: "Data Analysis Basics", category: "AI & Data Science", proficiency: 65, targetProficiency: 80, isAssessed: false },
+      
+      { name: "Git & GitHub", category: "Cloud & Tools", proficiency: 85, targetProficiency: 95, isAssessed: true },
+      { name: "Spring Boot", category: "Cloud & Tools", proficiency: 58, targetProficiency: 85, isAssessed: true },
+      { name: "Docker Containerization", category: "Cloud & Tools", proficiency: 50, targetProficiency: 75, isAssessed: false },
+      
+      { name: "Technical Communication", category: "Soft Skills", proficiency: 78, targetProficiency: 90, isAssessed: true },
+      { name: "Team Collaboration", category: "Soft Skills", proficiency: 80, targetProficiency: 90, isAssessed: false }
+    ],
+
+    // Career Goals
+    careerGoals: {
+      primaryGoal: "Become a Lead Java Backend Engineer at a Tier-1 Product Company",
+      targetRole: "Java Backend Developer",
+      preferredIndustries: ["FinTech", "SaaS / Cloud Enterprise", "E-Commerce Systems"],
+      preferredLocationMode: "Hybrid / Bangalore, Pune, Remote",
+      careerInterests: ["Microservices Architecture", "Distributed Systems", "SQL Query Tuning", "Cloud Computing", "Algorithmic DSA"],
+      shortTermObjectives: "Crack campus placement with ₹8+ LPA package, publish 2 backend microservice projects on GitHub"
+    },
+
+    // Projects
+    projects: [
+      {
+        id: "p1",
+        title: "E-Commerce Microservices Engine",
+        description: "Scalable backend service architecture built with Spring Boot, Redis caching, and PostgreSQL database.",
+        techStack: ["Java", "Spring Boot", "PostgreSQL", "Redis"],
+        status: "Completed",
+        githubUrl: "https://github.com/ananya-roy/ecommerce-microservices",
+        liveUrl: "https://shop-api.dev"
+      },
+      {
+        id: "p2",
+        title: "Real-Time AI Resume Gap Analyzer",
+        description: "Full stack web application comparing student resumes with job descriptions to highlight skill gaps.",
+        techStack: ["React", "Node.js", "Express", "OpenAI API"],
+        status: "Completed",
+        githubUrl: "https://github.com/ananya-roy/resume-analyzer-ai",
+        liveUrl: "https://resume-gap.skillora.app"
+      },
+      {
+        id: "p3",
+        title: "Distributed Job Alert Dispatcher",
+        description: "High-performance job notification daemon processing asynchronous message queues.",
+        techStack: ["Java", "RabbitMQ", "Docker", "JUnit"],
+        status: "In Progress",
+        githubUrl: "https://github.com/ananya-roy/job-alert-dispatcher",
+        liveUrl: ""
+      }
+    ],
+
+    // Experiences
+    experiences: [
+      {
+        id: "e1",
+        title: "Java Backend Developer Intern",
+        company: "TechNova Solutions",
+        duration: "May 2025 - Jul 2025 (3 Months)",
+        description: "Designed and implemented 5 RESTful API endpoints for user authorization and automated transaction logging.",
+        responsibilities: "Reduced API response latency by 35% through query optimization and SQL indexing."
+      }
+    ],
+
+    // Certifications
+    certifications: [
+      {
+        id: "c1",
+        title: "NPTEL Programming, Data Structures & Algorithms in Java",
+        issuer: "IIT Kharagpur / SWAYAM",
+        issueDate: "2024-05",
+        credentialUrl: "https://nptel.ac.in/noc/cert/123"
+      },
+      {
+        id: "c2",
+        title: "AWS Certified Cloud Practitioner",
+        issuer: "Amazon Web Services",
+        issueDate: "2024-11",
+        credentialUrl: "https://aws.amazon.com/verify/aws-123"
+      }
+    ],
+
+    // Achievements
+    achievements: [
+      {
+        id: "a1",
+        title: "Smart India Hackathon 2024 Finalist",
+        issuingOrg: "Ministry of Education",
+        issueDate: "2024-12",
+        credentialUrl: "",
+        description: "Selected in top 15 teams nationwide for building an AI-driven smart agriculture management app."
+      },
+      {
+        id: "a2",
+        title: "Annual College CodeSprint Winner",
+        issuingOrg: "IIT Jaipur Coding Club",
+        issueDate: "2025-02",
+        credentialUrl: "",
+        description: "Secured 1st rank among 300+ participants by solving 5 DSA challenges in 90 minutes."
+      }
+    ],
+
+    // Readiness & Growth Metrics
     employabilityScore: 745,
     maxScore: 900,
-    scoreBreakdown: {
-      academics: 195, // max 225
-      technicalDSA: 220, // max 270
-      projects: 150, // max 180
-      softSkills: 105, // max 135
-      certifications: 75 // max 90
+    readinessMetrics: {
+      employabilityScore: 745,
+      skillGapStatus: "85% Match (2 Priority Gaps)",
+      interviewReadiness: "Ready (82% Mock Score)",
+      resumeAnalysisStatus: "ATS Score: 84 / 100",
+      growthMapProgress: "Weekly Target: 65%"
     },
-    weeklyLogs: [
-      { week: "W1 (Aug 1)", score: 620, dsa: 55, projects: 50, comm: 60 },
-      { week: "W2 (Aug 8)", score: 650, dsa: 60, projects: 55, comm: 65 },
-      { week: "W3 (Aug 15)", score: 680, dsa: 65, projects: 65, comm: 70 },
-      { week: "W4 (Aug 22)", score: 710, dsa: 72, projects: 70, comm: 72 },
-      { week: "W5 (Aug 29)", score: 730, dsa: 75, projects: 75, comm: 78 },
-      { week: "W6 (Current)", score: 745, dsa: 80, projects: 78, comm: 82 }
+    scoreHistory: [
+      { date: "Aug 1", score: 620 },
+      { date: "Aug 8", score: 650 },
+      { date: "Aug 15", score: 680 },
+      { date: "Aug 22", score: 710 },
+      { date: "Aug 29", score: 730 },
+      { date: "Sep 20", score: 745 }
     ],
+
+    // Recent Activity History
+    recentActivity: [
+      { id: "act1", title: "Completed AI Mock Interview", category: "Interview", result: "Score: 82% (Strong Technical Communication)", timestamp: "2 days ago" },
+      { id: "act2", title: "Added New Project: E-Commerce Microservices Engine", category: "Projects", result: "GitHub Verified", timestamp: "4 days ago" },
+      { id: "act3", title: "Analyzed ATS Resume for Java Backend Developer", category: "Resume", result: "ATS Score: 84 / 100", timestamp: "1 week ago" },
+      { id: "act4", title: "Achieved NPTEL Core Java Certification", category: "Certifications", result: "Elite + Gold Badge", timestamp: "2 weeks ago" },
+      { id: "act5", title: "Updated Target Career Role to Java Backend Developer", category: "Career Goals", result: "Goal Saved", timestamp: "3 weeks ago" }
+    ],
+
     peerPercentiles: {
       dsaPercentile: 68,
       projectPercentile: 82,
       communicationPercentile: 74,
       overallPercentile: 76
-    },
-    verifiedBadges: [
-      { id: "b1", title: "React Basics", issuer: "NPTEL / IIT Kharagpur", date: "2024-05-10", hash: "0x89a...f42", status: "Verified" },
-      { id: "b2", title: "SQL for Data Analytics", issuer: "SWAYAM", date: "2024-08-15", hash: "0x72b...c91", status: "Verified" }
-    ]
+    }
   },
   govtSchemes: [
     {

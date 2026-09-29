@@ -1,208 +1,427 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { 
   Sparkles, 
   Globe, 
-  Mic, 
-  Award, 
   User, 
-  BarChart3, 
-  BookOpen, 
-  FileText, 
-  Video, 
-  Building2, 
-  ShieldCheck,
-  CheckCircle2
+  Search,
+  ChevronDown,
+  Menu,
+  X,
+  LogIn
 } from 'lucide-react';
+
+import { GLOBAL_SEARCH_DATABASE } from './GlobalSearchResultsPage';
+import { SUPPORTED_LANGUAGES, t } from '../utils/i18n';
 
 export default function Navbar({ 
   activeTab, 
   setActiveTab, 
   language, 
   setLanguage, 
-  voiceEnabled, 
-  setVoiceEnabled,
-  studentProfile 
+  studentProfile,
+  onOpenModal,
+  searchQuery,
+  setSearchQuery,
+  onSelectSubFeature,
+  onToggleSidebarMobile,
+  isMobileSidebarOpen,
+  onOpenAuthModal
 }) {
+  const [isLangDropdownOpen, setIsLangDropdownOpen] = useState(false);
+  const [isSearchFocused, setIsSearchFocused] = useState(false);
+  const [recentSearches, setRecentSearches] = useState(() => {
+    try {
+      const saved = localStorage.getItem('skillora_recent_searches');
+      return saved ? JSON.parse(saved) : ['Java Developer', 'Mock Interview', 'Spring Boot'];
+    } catch (e) {
+      return ['Java Developer', 'Mock Interview'];
+    }
+  });
+
+  const saveRecentSearch = (query) => {
+    if (!query.trim()) return;
+    setRecentSearches(prev => {
+      const filtered = prev.filter(q => q.toLowerCase() !== query.toLowerCase());
+      const updated = [query.trim(), ...filtered].slice(0, 5);
+      try {
+        localStorage.setItem('skillora_recent_searches', JSON.stringify(updated));
+      } catch (e) {}
+      return updated;
+    });
+  };
+
+  // Filter matching search items
+  const trimmedQuery = (searchQuery || '').trim().toLowerCase();
+  const liveSearchResults = trimmedQuery
+    ? GLOBAL_SEARCH_DATABASE.filter(item =>
+        item.title.toLowerCase().includes(trimmedQuery) ||
+        item.description.toLowerCase().includes(trimmedQuery) ||
+        item.category.toLowerCase().includes(trimmedQuery) ||
+        item.tags.some(t => t.toLowerCase().includes(trimmedQuery))
+      ).slice(0, 5)
+    : [];
+
+  const languagesList = [
+    { code: 'English', label: '🌐 English' },
+    { code: 'Hindi', label: '🇮🇳 हिंदी (Hindi)' },
+    { code: 'Marathi', label: '🇮🇳 मराठी (Marathi)' }
+  ];
+
   return (
     <header style={{
       position: 'sticky',
       top: 0,
       zIndex: 100,
-      backgroundColor: 'rgba(255, 255, 255, 0.92)',
+      backgroundColor: 'rgba(255, 255, 255, 0.95)',
       backdropFilter: 'blur(12px)',
-      borderBottom: '1px solid #E2E8F0',
-      padding: '12px 24px'
+      borderBottom: '1px solid #EAE2F8',
+      padding: '10px 24px',
+      boxShadow: '0 2px 12px rgba(185, 160, 232, 0.08)'
     }}>
       <div style={{
-        maxWidth: '1280px',
+        maxWidth: '1380px',
         margin: '0 auto',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
         gap: '16px'
       }}>
-        {/* Brand Logo */}
-        <div 
-          onClick={() => setActiveTab('home')}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '10px',
-            cursor: 'pointer'
-          }}
-        >
-          <div style={{
-            width: '38px',
-            height: '38px',
-            borderRadius: '10px',
-            background: 'linear-gradient(135deg, #4F46E5 0%, #3B82F6 100%)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            color: '#FFFFFF',
-            boxShadow: '0 4px 12px rgba(79, 70, 229, 0.3)'
-          }}>
-            <Sparkles size={22} />
-          </div>
-          <div>
-            <span style={{
-              fontSize: '1.4rem',
-              fontWeight: 800,
-              color: '#0F172A',
-              letterSpacing: '-0.5px'
+        {/* Left: Mobile menu toggle & Logo */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+          <button 
+            onClick={onToggleSidebarMobile}
+            style={{
+              display: 'none',
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+              color: '#2D1B4E'
+            }}
+            className="mobile-sidebar-btn"
+          >
+            {isMobileSidebarOpen ? <X size={22} /> : <Menu size={22} />}
+          </button>
+
+          <div 
+            onClick={() => setActiveTab('home')}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '10px',
+              cursor: 'pointer'
+            }}
+          >
+            <div style={{
+              width: '38px',
+              height: '38px',
+              borderRadius: '12px',
+              background: 'linear-gradient(135deg, #B9A0E8 0%, #9333EA 100%)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: '#FFFFFF',
+              boxShadow: '0 4px 14px rgba(147, 51, 234, 0.3)'
             }}>
-              Career<span style={{ color: '#4F46E5' }}>Leap</span>
-            </span>
+              <Sparkles size={22} />
+            </div>
+            <div>
+              <span style={{
+                fontSize: '1.45rem',
+                fontWeight: 800,
+                color: '#2D1B4E',
+                letterSpacing: '-0.5px'
+              }}>
+                Skill<span style={{ color: '#9333EA' }}>ora</span>
+              </span>
+            </div>
           </div>
         </div>
 
-        {/* Navigation Links */}
-        <nav style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '8px',
-          overflowX: 'auto',
-          padding: '4px'
-        }}>
-          <button 
-            onClick={() => setActiveTab('home')}
-            className={`tab-pill ${activeTab === 'home' ? 'active' : ''}`}
-          >
-            Home
-          </button>
-          <button 
-            onClick={() => setActiveTab('dashboard')}
-            className={`tab-pill ${activeTab === 'dashboard' ? 'active' : ''}`}
-          >
-            Dashboard & Score
-          </button>
-          <button 
-            onClick={() => setActiveTab('skill-gap')}
-            className={`tab-pill ${activeTab === 'skill-gap' ? 'active' : ''}`}
-          >
-            Skill Gap
-          </button>
-          <button 
-            onClick={() => setActiveTab('resume-tools')}
-            className={`tab-pill ${activeTab === 'resume-tools' ? 'active' : ''}`}
-          >
-            Resume ↔ JD
-          </button>
-          <button 
-            onClick={() => setActiveTab('mock-interview')}
-            className={`tab-pill ${activeTab === 'mock-interview' ? 'active' : ''}`}
-          >
-            AI Interview
-          </button>
-          <button 
-            onClick={() => setActiveTab('govt-schemes')}
-            className={`tab-pill ${activeTab === 'govt-schemes' ? 'active' : ''}`}
-          >
-            Govt Schemes
-          </button>
-          <button 
-            onClick={() => setActiveTab('learning')}
-            className={`tab-pill ${activeTab === 'learning' ? 'active' : ''}`}
-          >
-            Free Courses
-          </button>
-          <button 
-            onClick={() => setActiveTab('tpo')}
-            className={`tab-pill ${activeTab === 'tpo' ? 'active' : ''}`}
-          >
-            TPO College View
-          </button>
-        </nav>
+        {/* Center: Nav links & Search Bar */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '20px', flexGrow: 1, justifyContent: 'center', maxWidth: '650px' }}>
+          <nav style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <button 
+              onClick={() => setActiveTab('home')}
+              className={`tab-pill ${activeTab === 'home' ? 'active' : ''}`}
+            >
+              Home
+            </button>
+            <button 
+              onClick={() => onOpenModal('about')}
+              className="tab-pill"
+            >
+              About Us
+            </button>
+            <button 
+              onClick={() => onOpenModal('why-us')}
+              className="tab-pill"
+            >
+              Why Us
+            </button>
+            <button 
+              onClick={() => onOpenModal('contact')}
+              className="tab-pill"
+            >
+              Contact
+            </button>
+          </nav>
+
+          {/* Search bar with Live Autocomplete Dropdown */}
+          <div style={{
+            position: 'relative',
+            flexGrow: 1,
+            maxWidth: '280px'
+          }}>
+            <Search size={15} color="#9333EA" style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', zIndex: 10 }} />
+            <input 
+              type="text"
+              placeholder="Search jobs, skills, roles, courses..."
+              value={searchQuery}
+              onChange={(e) => {
+                setSearchQuery(e.target.value);
+                setIsSearchFocused(true);
+              }}
+              onFocus={() => setIsSearchFocused(true)}
+              onBlur={() => setTimeout(() => setIsSearchFocused(false), 200)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  saveRecentSearch(searchQuery);
+                  setIsSearchFocused(false);
+                  if (onSelectSubFeature) onSelectSubFeature('search-results');
+                }
+              }}
+              style={{
+                width: '100%',
+                padding: '8px 12px 8px 34px',
+                borderRadius: '20px',
+                border: isSearchFocused ? '1.5px solid #9333EA' : '1px solid #EAE2F8',
+                background: '#FAF7FF',
+                fontSize: '0.83rem',
+                outline: 'none',
+                color: '#2D1B4E',
+                boxSizing: 'border-box'
+              }}
+            />
+
+            {/* LIVE SEARCH AUTOCOMPLETE DROPDOWN */}
+            {isSearchFocused && (
+              <div style={{
+                position: 'absolute',
+                top: '110%',
+                left: 0,
+                right: 0,
+                background: '#FFFFFF',
+                borderRadius: '16px',
+                boxShadow: '0 12px 30px rgba(147, 51, 234, 0.15)',
+                border: '1px solid #E9D5FF',
+                zIndex: 250,
+                padding: '12px',
+                maxWidth: '360px',
+                width: '320px'
+              }}>
+                {trimmedQuery ? (
+                  <>
+                    <div style={{ fontSize: '0.75rem', fontWeight: '700', color: '#6B7280', textTransform: 'uppercase', marginBottom: '8px' }}>
+                      Search Results ({liveSearchResults.length}):
+                    </div>
+                    {liveSearchResults.length === 0 ? (
+                      <div style={{ fontSize: '0.82rem', color: '#9CA3AF', padding: '8px 0', textAlign: 'center' }}>
+                        No direct match. Press Enter for full global search.
+                      </div>
+                    ) : (
+                      liveSearchResults.map(item => (
+                        <div
+                          key={item.id}
+                          onMouseDown={() => {
+                            saveRecentSearch(searchQuery);
+                            setIsSearchFocused(false);
+                            if (onSelectSubFeature) onSelectSubFeature(item.subFeatureId);
+                          }}
+                          style={{
+                            padding: '8px 10px',
+                            borderRadius: '10px',
+                            cursor: 'pointer',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: '2px',
+                            transition: 'background 0.2s',
+                            marginBottom: '4px'
+                          }}
+                          onMouseEnter={(e) => e.currentTarget.style.background = '#FAF7FF'}
+                          onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                        >
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <span style={{ fontSize: '0.85rem', fontWeight: '700', color: '#1E1B4B' }}>{item.title}</span>
+                            <span style={{ fontSize: '0.7rem', color: '#9333EA', background: '#F3E8FF', padding: '1px 6px', borderRadius: '4px', fontWeight: '700' }}>
+                              {item.category}
+                            </span>
+                          </div>
+                          <span style={{ fontSize: '0.75rem', color: '#6B7280', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                            {item.description}
+                          </span>
+                        </div>
+                      ))
+                    )}
+
+                    <button
+                      onMouseDown={() => {
+                        saveRecentSearch(searchQuery);
+                        setIsSearchFocused(false);
+                        if (onSelectSubFeature) onSelectSubFeature('search-results');
+                      }}
+                      style={{
+                        width: '100%',
+                        marginTop: '8px',
+                        padding: '8px',
+                        borderRadius: '10px',
+                        background: '#9333EA',
+                        color: '#FFF',
+                        border: 'none',
+                        fontSize: '0.8rem',
+                        fontWeight: '700',
+                        cursor: 'pointer',
+                        textAlign: 'center'
+                      }}
+                    >
+                      View All Results for "{searchQuery}" →
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <div style={{ fontSize: '0.75rem', fontWeight: '700', color: '#6B7280', textTransform: 'uppercase', marginBottom: '8px' }}>
+                      Recent Searches:
+                    </div>
+                    {recentSearches.map((term, idx) => (
+                      <div
+                        key={idx}
+                        onMouseDown={() => {
+                          setSearchQuery(term);
+                          saveRecentSearch(term);
+                          if (onSelectSubFeature) onSelectSubFeature('search-results');
+                        }}
+                        style={{
+                          padding: '6px 10px',
+                          borderRadius: '8px',
+                          fontSize: '0.82rem',
+                          color: '#4B5563',
+                          cursor: 'pointer',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '6px'
+                        }}
+                        onMouseEnter={(e) => e.currentTarget.style.background = '#FAF7FF'}
+                        onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                      >
+                        <Search size={12} color="#9333EA" />
+                        <span>{term}</span>
+                      </div>
+                    ))}
+                  </>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
 
         {/* Right Action Controls */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          {/* Employability Score Pill */}
-          <div 
-            onClick={() => setActiveTab('dashboard')}
-            style={{
-              background: '#EEF2FF',
-              border: '1px solid #C7D2FE',
-              borderRadius: '20px',
-              padding: '6px 14px',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px',
-              cursor: 'pointer',
-              fontSize: '0.85rem',
-              fontWeight: 700,
-              color: '#4F46E5'
-            }}
-            title="Click to view Employability Score breakdown"
-          >
-            <Award size={16} />
-            <span>Score: {studentProfile?.employabilityScore || 745}/900</span>
-          </div>
-
-          {/* Language Switcher */}
-          <div style={{ position: 'relative', display: 'flex', alignItems: 'center', gap: '4px' }}>
-            <Globe size={16} color="#64748B" />
-            <select 
-              value={language}
-              onChange={(e) => setLanguage(e.target.value)}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          
+          {/* Multilingual Selector */}
+          <div style={{ position: 'relative' }}>
+            <button
+              onClick={() => setIsLangDropdownOpen(!isLangDropdownOpen)}
               style={{
-                padding: '6px 10px',
-                borderRadius: '16px',
-                border: '1px solid #CBD5E1',
-                fontSize: '0.85rem',
+                background: '#FAF7FF',
+                border: '1px solid #EAE2F8',
+                borderRadius: '20px',
+                padding: '6px 12px',
+                fontSize: '0.82rem',
                 fontWeight: 600,
-                color: '#334155',
-                outline: 'none',
+                color: '#2D1B4E',
                 cursor: 'pointer',
-                background: '#FFFFFF'
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px'
               }}
             >
-              <option value="English">🌐 English</option>
-              <option value="Hindi">🇮🇳 हिंदी (Hindi)</option>
-              <option value="Hinglish">🗣️ Hinglish</option>
-            </select>
+              <Globe size={15} color="#9333EA" />
+              <span>{language}</span>
+              <ChevronDown size={14} color="#7A6F8A" />
+            </button>
+
+            {isLangDropdownOpen && (
+              <div style={{
+                position: 'absolute',
+                right: 0,
+                top: '110%',
+                background: '#FFFFFF',
+                border: '1px solid #EAE2F8',
+                borderRadius: '14px',
+                boxShadow: '0 8px 24px rgba(185, 160, 232, 0.2)',
+                padding: '8px',
+                minWidth: '200px',
+                maxHeight: '320px',
+                overflowY: 'auto',
+                zIndex: 300
+              }}>
+                {SUPPORTED_LANGUAGES.map((lang) => (
+                  <div
+                    key={lang.code}
+                    onClick={() => {
+                      setLanguage(lang.code);
+                      try {
+                        localStorage.setItem('skillora_user_language', lang.code);
+                      } catch (e) {}
+                      setIsLangDropdownOpen(false);
+                    }}
+                    style={{
+                      padding: '8px 12px',
+                      borderRadius: '8px',
+                      fontSize: '0.85rem',
+                      cursor: 'pointer',
+                      background: language === lang.code ? '#F0EAFA' : 'transparent',
+                      color: language === lang.code ? '#9333EA' : '#2D1B4E',
+                      fontWeight: language === lang.code ? 700 : 500
+                    }}
+                  >
+                    {lang.nativeName}
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
-          {/* Voice Assistant Toggle */}
+          {/* Login / Auth Button */}
           <button
-            onClick={() => setVoiceEnabled(!voiceEnabled)}
+            onClick={onOpenAuthModal}
+            className="btn-secondary"
+            style={{ padding: '6px 14px', fontSize: '0.82rem' }}
+          >
+            <LogIn size={15} color="#9333EA" />
+            <span>Login / Register</span>
+          </button>
+
+          {/* Profile Icon */}
+          <button
+            onClick={() => onOpenModal('profile')}
             style={{
-              padding: '8px 12px',
-              borderRadius: '20px',
-              border: voiceEnabled ? '1.5px solid #4F46E5' : '1px solid #CBD5E1',
-              background: voiceEnabled ? '#EEF2FF' : '#FFFFFF',
-              color: voiceEnabled ? '#4F46E5' : '#64748B',
-              cursor: 'pointer',
+              width: '38px',
+              height: '38px',
+              borderRadius: '50%',
+              background: '#F6DCEC',
+              border: '1.5px solid #B9A0E8',
               display: 'flex',
               alignItems: 'center',
-              gap: '6px',
-              fontWeight: 600,
-              fontSize: '0.8rem'
+              justifyContent: 'center',
+              cursor: 'pointer',
+              color: '#2D1B4E',
+              transition: 'all 0.2s ease'
             }}
-            title={voiceEnabled ? "Voice Assistant Enabled" : "Click to enable Voice Assistant"}
+            title="Student Profile"
           >
-            <Mic size={15} color={voiceEnabled ? '#4F46E5' : '#64748B'} />
-            <span>{voiceEnabled ? "Voice ON" : "Voice"}</span>
+            <User size={18} color="#9333EA" />
           </button>
+
         </div>
       </div>
     </header>

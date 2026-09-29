@@ -1,365 +1,292 @@
 import React from 'react';
 import { 
-  Target, 
-  FileText, 
-  GraduationCap, 
-  Mic, 
-  UserCheck, 
-  MessageSquare, 
-  Calendar, 
   BarChart2, 
-  Languages, 
-  Send,
+  Compass, 
+  ShieldAlert, 
+  Award, 
+  TrendingUp, 
+  Target, 
   Sparkles,
   ArrowRight,
   CheckCircle2,
+  UserCheck,
   BookOpen,
-  Award,
   Layers,
-  MapPin,
-  TrendingUp,
-  ShieldAlert,
-  Briefcase
+  FileText,
+  Send
 } from 'lucide-react';
-import { translations } from '../data/translations';
 
-export default function HeroLanding({ onSelectFeature, language = "English" }) {
-  const t = translations[language] || translations.English;
+export default function HeroLanding({ 
+  onSelectSubFeature, 
+  studentProfile,
+  onNavigateProgress,
+  searchQuery
+}) {
 
-  const features = [
+  // Exact 6 Main Feature Cards specified for Home Page
+  const homeCards = [
     {
-      id: 'skill-gap',
-      title: t.featSkillGap,
-      subtitle: t.featSkillGapSub,
-      icon: Target,
-      bg: '#EEF2FF',
-      color: '#4F46E5'
-    },
-    {
-      id: 'resume-tools',
-      title: t.featResumeJd,
-      subtitle: t.featResumeJdSub,
-      icon: FileText,
-      bg: '#F0FDF4',
-      color: '#16A34A'
-    },
-    {
-      id: 'learning',
-      title: t.featFreeResources,
-      subtitle: t.featFreeResourcesSub,
-      icon: GraduationCap,
-      bg: '#EFF6FF',
-      color: '#2563EB'
-    },
-    {
-      id: 'mock-interview',
-      title: t.featMockInterview,
-      subtitle: t.featMockInterviewSub,
-      icon: Mic,
-      bg: '#FAF5FF',
-      color: '#9333EA'
-    },
-    {
-      id: 'elevator-pitch',
-      title: t.featElevatorPitch,
-      subtitle: t.featElevatorPitchSub,
-      icon: UserCheck,
-      bg: '#FFF7ED',
-      color: '#EA580C'
-    },
-    {
-      id: 'career-chat',
-      title: t.featCareerChat,
-      subtitle: t.featCareerChatSub,
-      icon: MessageSquare,
-      bg: '#ECFDF5',
-      color: '#059669'
-    },
-    {
-      id: 'weekly-nudge',
-      title: t.featWeeklyNudge,
-      subtitle: t.featWeeklyNudgeSub,
-      icon: Calendar,
-      bg: '#FEF2F2',
-      color: '#DC2626'
-    },
-    {
-      id: 'peer-benchmark',
-      title: t.featPeerBenchmark,
-      subtitle: t.featPeerBenchmarkSub,
+      id: 'growth-map',
+      title: 'Growth Map & Weekly Reports',
+      description: 'Track daily career progress, skills practiced, completed tasks, and weekly milestones with visual interactive charts.',
+      metric: '65% Weekly Progress Achieved',
       icon: BarChart2,
-      bg: '#F5F3FF',
-      color: '#7C3AED'
+      bg: '#F0EAFA',
+      color: '#9333EA',
+      action: 'View Progress'
     },
     {
-      id: 'local-lang',
-      title: t.featLocalLang,
-      subtitle: t.featLocalLangSub,
-      icon: Languages,
-      bg: '#FDF2F8',
-      color: '#DB2777'
+      id: 'mentor-guidance',
+      title: 'Mentor Guidance',
+      description: 'AI Career Mentor providing supportive, non-judgmental guidance on career paths, anxiety support, and next steps.',
+      metric: '3 Personal AI Nudges Ready',
+      icon: Compass,
+      bg: '#FFF0F7',
+      color: '#DB2777',
+      action: 'Get Guidance'
     },
     {
-      id: 'practice-app',
-      title: t.featPracticeApp,
-      subtitle: t.featPracticeAppSub,
-      icon: Send,
-      bg: '#F0F9FF',
-      color: '#0284C7'
+      id: 'red-flag-detector',
+      title: 'AI Red Flag Detector',
+      description: 'Analyze job & internship descriptions to identify suspicious registration fees, unpaid work, or vague listings.',
+      metric: 'Safe & Verified Scanner',
+      icon: ShieldAlert,
+      bg: '#FEF2F2',
+      color: '#DC2626',
+      action: 'Scan Opportunity'
+    },
+    {
+      id: 'employability-score',
+      title: 'Employability Score',
+      description: 'Role-specific employability rating (72/100) with detailed component breakdown across technical skills, projects & experience.',
+      metric: '72 / 100 — Placement Ready',
+      icon: Award,
+      bg: '#F0EAFA',
+      color: '#9333EA',
+      action: 'View Score Breakdown'
+    },
+    {
+      id: 'peer-benchmarking',
+      title: 'Peer Benchmarking',
+      description: 'Privacy-protected anonymized comparison with peers from Computer Science Engineering (3rd Year).',
+      metric: 'Top 24th Percentile in Batch',
+      icon: TrendingUp,
+      bg: '#EFF6FF',
+      color: '#2563EB',
+      action: 'Compare Standing'
+    },
+    {
+      id: 'skill-demand',
+      title: 'Skill Demand Radar',
+      description: 'Live industry skill demands for Java Backend Developer vs your verified skill profile.',
+      metric: 'Need: Spring Boot & REST APIs',
+      icon: Target,
+      bg: '#ECFDF5',
+      color: '#059669',
+      action: 'Explore Demand Radar'
     }
   ];
 
-  const steps = [
-    { num: 1, label: 'Assess', desc: 'Know your current skills and profile', icon: UserCheck },
-    { num: 2, label: 'Identify', desc: 'Find your skill gaps and career path', icon: Target },
-    { num: 3, label: 'Learn', desc: 'Get free, curated resources', icon: BookOpen },
-    { num: 4, label: 'Build', desc: 'Create projects and gain experience', icon: Layers },
-    { num: 5, label: 'Improve Resume', desc: 'Match with JDs and get better', icon: FileText },
-    { num: 6, label: 'Practice', desc: 'Take mock interviews and refine your answers', icon: Mic },
-    { num: 7, label: 'Apply', desc: 'Use our practice application mode', icon: Send },
-    { num: 8, label: 'Measure', desc: 'Track your progress with an employability score', icon: BarChart2 }
+  // Filter cards if search query present
+  const filteredCards = searchQuery 
+    ? homeCards.filter(c => 
+        c.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+        c.description.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    : homeCards;
+
+  const journeySteps = [
+    { num: 1, label: 'Create Profile', desc: 'Set up your student academic profile', icon: UserCheck },
+    { num: 2, label: 'Choose Goal', desc: 'Identify your target career role', icon: Target },
+    { num: 3, label: 'Analyze Skills', desc: 'Identify skill gaps & readiness score', icon: BarChart2 },
+    { num: 4, label: 'Explore Jobs', desc: 'Discover verified jobs & schemes', icon: Send },
+    { num: 5, label: 'Improve', desc: 'Build projects & practice interviews', icon: Layers },
+    { num: 6, label: 'Track Progress', desc: 'Monitor weekly growth & benchmarks', icon: TrendingUp }
   ];
 
   return (
-    <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '40px 20px' }} className="fade-in">
+    <div style={{ padding: '24px 20px', maxWidth: '1200px', margin: '0 auto' }} className="fade-in">
       
-      {/* HERO SECTION */}
+      {/* HERO SECTION MATCHING PROMPT INSTRUCTIONS */}
       <section style={{
-        background: 'linear-gradient(135deg, #EEF2FF 0%, #E0E7FF 50%, #F5F3FF 100%)',
+        background: 'linear-gradient(135deg, #FAF7FF 0%, #FFF0F7 50%, #FFFFFF 100%)',
+        border: '1px solid #EAE2F8',
         borderRadius: '28px',
-        padding: '50px 40px',
+        padding: '36px',
+        marginBottom: '40px',
         position: 'relative',
-        overflow: 'hidden',
-        border: '1px solid #C7D2FE',
-        marginBottom: '60px'
+        boxShadow: '0 8px 30px rgba(185, 160, 232, 0.12)'
       }}>
         <div style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-          gap: '40px',
+          gap: '30px',
           alignItems: 'center'
         }}>
+          {/* Left Hero Content */}
           <div>
-            {/* Badge */}
-            <div className="badge-pill" style={{ marginBottom: '20px' }}>
-              <Sparkles size={16} />
-              <span>{t.heroBadge}</span>
+            <div className="badge-pill" style={{ marginBottom: '14px', background: '#F6DCEC', borderColor: '#B9A0E8' }}>
+              <Sparkles size={15} color="#9333EA" />
+              <span>Personalized Student Employability Platform</span>
             </div>
 
-            {/* Headline */}
             <h1 style={{
-              fontSize: '2.8rem',
+              fontSize: '2.6rem',
               fontWeight: 800,
+              color: '#2D1B4E',
               lineHeight: '1.2',
-              color: '#0F172A',
-              marginBottom: '20px',
-              letterSpacing: '-1px'
+              marginBottom: '14px'
             }}>
-              From Skills to Opportunities <br />
-              <span className="text-gradient">— We Help You Get There</span>
+              Your Career Journey Starts Here
             </h1>
 
-            {/* Subhead */}
             <p style={{
-              fontSize: '1.1rem',
-              color: '#475569',
-              marginBottom: '32px',
-              maxWidth: '560px',
-              lineHeight: '1.6'
+              fontSize: '1.05rem',
+              color: '#4A3E56',
+              marginBottom: '26px',
+              lineHeight: '1.65'
             }}>
-              {t.heroSubtitle}
+              Skillora helps students understand their strengths, identify skill gaps, explore career opportunities, and prepare for their professional future through personalized guidance and career-readiness insights.
             </p>
 
-            {/* CTA Buttons */}
-            <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', marginBottom: '32px' }}>
+            <div style={{ display: 'flex', gap: '14px', flexWrap: 'wrap', marginBottom: '28px' }}>
               <button 
-                onClick={() => onSelectFeature('dashboard')} 
+                onClick={() => onSelectSubFeature('academic-guidance')}
                 className="btn-primary"
-                style={{ padding: '14px 28px', fontSize: '1rem' }}
+                style={{ padding: '12px 26px', fontSize: '1rem' }}
               >
-                <span>{t.startJourney}</span>
+                <span>Start My Journey</span>
+                <ArrowRight size={18} />
               </button>
+
               <button 
                 onClick={() => {
-                  document.getElementById('features-grid')?.scrollIntoView({ behavior: 'smooth' });
-                }} 
+                  document.getElementById('home-feature-cards')?.scrollIntoView({ behavior: 'smooth' });
+                }}
                 className="btn-secondary"
-                style={{ padding: '14px 28px', fontSize: '1rem' }}
+                style={{ padding: '12px 22px', fontSize: '0.95rem' }}
               >
-                <span>{t.exploreFeatures}</span>
+                <span>Explore 6 Core Features</span>
               </button>
             </div>
 
-            {/* 3 Sub-bullets */}
-            <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap', fontSize: '0.9rem', fontWeight: 600, color: '#334155' }}>
+            {/* Feature Badges */}
+            <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', fontSize: '0.85rem', fontWeight: 600, color: '#3A2D5C' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <CheckCircle2 size={18} color="#4F46E5" />
-                <span>{t.pillResources}</span>
+                <CheckCircle2 size={16} color="#9333EA" />
+                <span>Personalized Guidance</span>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <CheckCircle2 size={18} color="#4F46E5" />
-                <span>{t.pillGuidance}</span>
+                <CheckCircle2 size={16} color="#9333EA" />
+                <span>Skill Gap & Growth Tracking</span>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <CheckCircle2 size={18} color="#4F46E5" />
-                <span>{t.pillFocused}</span>
+                <CheckCircle2 size={16} color="#9333EA" />
+                <span>Privacy Protected Benchmarking</span>
               </div>
             </div>
           </div>
 
-          {/* Right Vector Journey Graphic Illustration */}
-          <div style={{
-            background: 'rgba(255, 255, 255, 0.85)',
-            backdropFilter: 'blur(16px)',
-            borderRadius: '24px',
-            padding: '24px',
-            border: '1px solid rgba(255, 255, 255, 0.9)',
-            boxShadow: '0 20px 40px rgba(79, 70, 229, 0.12)'
-          }}>
+          {/* Right Hero Graphic */}
+          <div style={{ position: 'relative', textAlign: 'center' }}>
             <div style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              marginBottom: '20px',
-              paddingBottom: '12px',
-              borderBottom: '1px solid #E2E8F0'
+              position: 'relative',
+              borderRadius: '24px',
+              overflow: 'hidden',
+              boxShadow: '0 16px 36px rgba(147, 51, 234, 0.15)',
+              border: '2px solid #FFFFFF'
             }}>
-              <div>
-                <span style={{ fontSize: '0.8rem', fontWeight: 700, color: '#4F46E5', textTransform: 'uppercase' }}>
-                  CAREER ROADMAP VECTOR SIMULATOR
-                </span>
-                <h3 style={{ fontSize: '1.2rem', fontWeight: 700, color: '#0F172A' }}>
-                  Simulated 3-Year Trajectory
-                </h3>
-              </div>
-              <span className="badge-pill" style={{ background: '#ECFDF5', color: '#059669', borderColor: '#A7F3D0' }}>
-                +₹4.2 LPA Lift
-              </span>
-            </div>
+              <img 
+                src="/student_hero.jpg" 
+                alt="Student Career Guidance" 
+                style={{ width: '100%', height: 'auto', display: 'block', maxHeight: '340px', objectFit: 'cover' }}
+              />
 
-            {/* Vector Path Nodes */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              {/* Floating Employability Score Badge */}
               <div style={{
-                background: '#4F46E5',
-                color: '#FFFFFF',
-                padding: '12px 16px',
-                borderRadius: '14px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                fontWeight: 600
+                position: 'absolute',
+                top: '16px',
+                right: '16px',
+                background: 'rgba(255, 255, 255, 0.95)',
+                backdropFilter: 'blur(10px)',
+                border: '1px solid #EAE2F8',
+                borderRadius: '16px',
+                padding: '12px 18px',
+                boxShadow: '0 8px 20px rgba(0,0,0,0.1)',
+                textAlign: 'left'
               }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                  <Briefcase size={18} />
-                  <span>Get Hired — Tier-1 Tech / Product Startup</span>
+                <div style={{ fontSize: '0.72rem', color: '#7A6F8A', fontWeight: 700, textTransform: 'uppercase' }}>
+                  Employability Readiness
                 </div>
-                <span style={{ fontSize: '0.8rem', background: 'rgba(255,255,255,0.2)', padding: '2px 8px', borderRadius: '8px' }}>
-                  Goal
-                </span>
-              </div>
-
-              <div style={{
-                background: '#EEF2FF',
-                color: '#4F46E5',
-                padding: '12px 16px',
-                borderRadius: '14px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                fontWeight: 600,
-                border: '1px solid #C7D2FE'
-              }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                  <Mic size={18} />
-                  <span>Practice AI Mock Interviews</span>
+                <div style={{ fontSize: '1.8rem', fontWeight: 800, color: '#9333EA', lineHeight: '1.1' }}>
+                  72 <span style={{ fontSize: '0.9rem', color: '#7A6F8A' }}>/ 100</span>
                 </div>
-                <span style={{ fontSize: '0.8rem', color: '#4F46E5' }}>92% Readiness</span>
-              </div>
-
-              <div style={{
-                background: '#F8FAFC',
-                color: '#334155',
-                padding: '12px 16px',
-                borderRadius: '14px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                fontWeight: 600,
-                border: '1px solid #E2E8F0'
-              }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                  <FileText size={18} />
-                  <span>Build Resume & Match JDs</span>
+                <div style={{ fontSize: '0.78rem', color: '#059669', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '4px', marginTop: '2px' }}>
+                  <span>Placement Ready ↗</span>
                 </div>
-                <span style={{ fontSize: '0.8rem', color: '#16A34A' }}>ATS Score: 88</span>
-              </div>
-
-              <div style={{
-                background: '#F8FAFC',
-                color: '#334155',
-                padding: '12px 16px',
-                borderRadius: '14px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                fontWeight: 600,
-                border: '1px solid #E2E8F0'
-              }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                  <GraduationCap size={18} />
-                  <span>Learn & Grow — Free NPTEL / SWAYAM</span>
-                </div>
-                <span style={{ fontSize: '0.8rem', color: '#2563EB' }}>2 Certs</span>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 10 FEATURES GRID SECTION */}
-      <section id="features-grid" style={{ marginBottom: '70px' }}>
-        <div style={{ textAlign: 'center', maxWidth: '720px', margin: '0 auto 40px auto' }}>
-          <h2 style={{ fontSize: '2.2rem', fontWeight: 800, color: '#0F172A', marginBottom: '12px' }}>
-            {t.sectionEverything}
+      {/* 6 MAIN HOME FEATURE CARDS SECTION */}
+      <section id="home-feature-cards" style={{ marginBottom: '50px' }}>
+        <div style={{ textAlign: 'center', marginBottom: '30px' }}>
+          <h2 style={{ fontSize: '2rem', fontWeight: 800, color: '#2D1B4E', marginBottom: '8px' }}>
+            Core Career Guidance Modules
           </h2>
-          <p style={{ color: '#64748B', fontSize: '1.05rem' }}>
-            {t.sectionEverythingSub}
+          <p style={{ color: '#7A6F8A', fontSize: '1rem', maxWidth: '640px', margin: '0 auto' }}>
+            Personalized insights, growth graphs, risk verification, and peer standing for your target role.
           </p>
         </div>
 
-        {/* 10 Feature Cards Grid */}
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(230px, 1fr))',
-          gap: '20px'
+          gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+          gap: '24px'
         }}>
-          {features.map((feat) => {
-            const IconComponent = feat.icon;
+          {filteredCards.map((card) => {
+            const CardIcon = card.icon;
             return (
               <div 
-                key={feat.id}
-                onClick={() => onSelectFeature(feat.id)}
+                key={card.id}
+                onClick={() => onSelectSubFeature(card.id)}
                 className="feature-card"
               >
-                <div className="icon-box" style={{ background: feat.bg, color: feat.color }}>
-                  <IconComponent size={24} />
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                  <div className="icon-box" style={{ background: card.bg, color: card.color }}>
+                    <CardIcon size={24} />
+                  </div>
+                  <span style={{
+                    fontSize: '0.75rem',
+                    fontWeight: 700,
+                    background: card.bg,
+                    color: card.color,
+                    padding: '3px 10px',
+                    borderRadius: '12px'
+                  }}>
+                    {card.metric}
+                  </span>
                 </div>
-                <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#0F172A', marginBottom: '8px' }}>
-                  {feat.title}
+
+                <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: '#2D1B4E', marginBottom: '8px' }}>
+                  {card.title}
                 </h3>
-                <p style={{ fontSize: '0.88rem', color: '#64748B', lineHeight: '1.5', flexGrow: 1 }}>
-                  {feat.subtitle}
+
+                <p style={{ fontSize: '0.9rem', color: '#4A3E56', lineHeight: '1.5', flexGrow: 1, marginBottom: '16px' }}>
+                  {card.description}
                 </p>
+
                 <div style={{
-                  marginTop: '16px',
                   display: 'flex',
                   alignItems: 'center',
                   gap: '6px',
-                  fontSize: '0.85rem',
+                  fontSize: '0.88rem',
                   fontWeight: 700,
-                  color: feat.color
+                  color: card.color
                 }}>
-                  <span>Explore Feature</span>
+                  <span>{card.action}</span>
                   <ArrowRight size={14} />
                 </div>
               </div>
@@ -368,31 +295,29 @@ export default function HeroLanding({ onSelectFeature, language = "English" }) {
         </div>
       </section>
 
-      {/* STEP BY STEP JOURNEY SECTION */}
+      {/* HOW SKILLORA WORKS: STEP BY STEP JOURNEY */}
       <section style={{
         background: '#FFFFFF',
         borderRadius: '24px',
-        padding: '40px',
-        border: '1px solid #E2E8F0',
+        padding: '36px',
+        border: '1px solid #EAE2F8',
         boxShadow: 'var(--shadow-sm)'
       }}>
-        <div style={{ textAlign: 'center', maxWidth: '720px', margin: '0 auto 36px auto' }}>
-          <h2 style={{ fontSize: '2rem', fontWeight: 800, color: '#0F172A', marginBottom: '10px' }}>
-            {t.sectionJourney}
+        <div style={{ textAlign: 'center', marginBottom: '30px' }}>
+          <h2 style={{ fontSize: '1.9rem', fontWeight: 800, color: '#2D1B4E', marginBottom: '6px' }}>
+            How Skillora Works, <span className="text-gradient">Step by Step</span>
           </h2>
-          <p style={{ color: '#64748B', fontSize: '1rem' }}>
-            {t.sectionJourneySub}
+          <p style={{ color: '#7A6F8A', fontSize: '0.95rem' }}>
+            A transparent 6-stage journey designed for student career success.
           </p>
         </div>
 
-        {/* 8 Horizontal Step Flow */}
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))',
-          gap: '16px',
-          alignItems: 'stretch'
+          gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
+          gap: '16px'
         }}>
-          {steps.map((step) => {
+          {journeySteps.map((step) => {
             const StepIcon = step.icon;
             return (
               <div key={step.num} className="step-node">
@@ -400,18 +325,18 @@ export default function HeroLanding({ onSelectFeature, language = "English" }) {
                   <StepIcon size={20} />
                 </div>
                 <div style={{
-                  fontSize: '0.75rem',
+                  fontSize: '0.72rem',
                   fontWeight: 800,
-                  color: '#4F46E5',
+                  color: '#9333EA',
                   textTransform: 'uppercase',
-                  marginBottom: '4px'
+                  marginBottom: '2px'
                 }}>
                   Step {step.num}
                 </div>
-                <h4 style={{ fontSize: '0.95rem', fontWeight: 700, color: '#0F172A', marginBottom: '4px' }}>
+                <h4 style={{ fontSize: '0.95rem', fontWeight: 800, color: '#2D1B4E', marginBottom: '4px' }}>
                   {step.label}
                 </h4>
-                <p style={{ fontSize: '0.78rem', color: '#64748B', lineHeight: '1.4' }}>
+                <p style={{ fontSize: '0.78rem', color: '#7A6F8A', lineHeight: '1.3' }}>
                   {step.desc}
                 </p>
               </div>

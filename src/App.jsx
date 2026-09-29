@@ -1,173 +1,208 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import HeroLanding from './components/HeroLanding';
-import Dashboard from './components/Dashboard';
-import SkillGap from './components/SkillGap';
-import ResumeTools from './components/ResumeTools';
-import MockInterview from './components/MockInterview';
-import GovtSchemes from './components/GovtSchemes';
-import LearningHub from './components/LearningHub';
+import LeftSidebar from './components/LeftSidebar';
+import SubFeatureViewer from './components/SubFeatureViewer';
 import CareerChatbot from './components/CareerChatbot';
-import TpoDashboard from './components/TpoDashboard';
 import TranslatorModal from './components/TranslatorModal';
+import NavbarModals from './components/NavbarModals';
+import AuthModal from './components/AuthModal';
+import FloatingChatbotWidget from './components/FloatingChatbotWidget';
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState('home');
-  const [language, setLanguage] = useState('English');
+  const [activeTab, setActiveTab] = useState('home'); // 'home', 'feature', 'career-chat'
+  const [activeSubFeature, setActiveSubFeature] = useState('profile-analysis');
+  const [language, setLanguage] = useState(() => {
+    try {
+      return localStorage.getItem('skillora_user_language') || 'English';
+    } catch (e) {
+      return 'English';
+    }
+  });
   const [voiceEnabled, setVoiceEnabled] = useState(false);
   const [isTranslatorOpen, setIsTranslatorOpen] = useState(false);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [activeModal, setActiveModal] = useState(null); // 'about', 'why-us', 'contact', 'profile'
+  const [searchQuery, setSearchQuery] = useState('');
+  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
 
-  // Student Profile state synced with backend API
-  const [studentProfile, setStudentProfile] = useState({
-    id: "STU-8921",
-    name: "Aarav Sharma",
-    college: "Institute of Technology, Jaipur",
-    tier: "Tier 2 College",
-    branch: "Computer Science & Engineering",
-    year: "3rd Year (Semester 6)",
-    cgpa: 7.8,
-    backlogHistory: 0,
-    targetRole: "Full Stack Developer",
-    skills: ["HTML/CSS", "JavaScript", "React", "Python", "SQL", "Git"],
-    employabilityScore: 745,
-    weeklyLogs: [
-      { week: "W1", score: 620 },
-      { week: "W2", score: 650 },
-      { week: "W3", score: 680 },
-      { week: "W4", score: 710 },
-      { week: "W5", score: 730 },
-      { week: "W6", score: 745 }
-    ],
-    peerPercentiles: { dsaPercentile: 68, projectPercentile: 82, communicationPercentile: 74, overallPercentile: 76 }
+  // Suggested Student Profile Data State
+  const [studentProfile, setStudentProfile] = useState(() => {
+    try {
+      const saved = localStorage.getItem('skillora_student_profile');
+      if (saved) return JSON.parse(saved);
+    } catch (e) {}
+
+    return {
+      id: "STU-7821",
+      name: "Ananya Roy",
+      email: "ananya.roy@college.edu.in",
+      phone: "+91 98765 43210",
+      college: "Institute of Technology & Engineering",
+      degree: "B.Tech",
+      branch: "Computer Science & Engineering",
+      year: "3rd Year",
+      semester: "Semester 6",
+      gradYear: "2026",
+      cgpa: 8.4,
+      sgpaHistory: [
+        { semester: "Sem 1", sgpa: 8.0 },
+        { semester: "Sem 2", sgpa: 8.2 },
+        { semester: "Sem 3", sgpa: 8.1 },
+        { semester: "Sem 4", sgpa: 8.5 },
+        { semester: "Sem 5", sgpa: 8.6 },
+        { semester: "Sem 6", sgpa: 8.8 }
+      ],
+      backlogHistory: 0,
+      class10Marks: "94.2%",
+      class12Marks: "91.8%",
+      targetRole: "Java Backend Developer",
+      employabilityScore: 745,
+      avatarUrl: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&auto=format&fit=crop&q=80",
+      peerPercentiles: { dsaPercentile: 68, projectPercentile: 82, communicationPercentile: 74, overallPercentile: 76 }
+    };
   });
 
-  // Fetch student profile on load
-  useEffect(() => {
-    fetch('/api/student/profile')
-      .then(res => res.json())
-      .then(data => {
-        if (data && data.name) {
-          setStudentProfile(data);
-        }
-      })
-      .catch(err => console.error("Error connecting to backend API:", err));
-  }, []);
+  const handleUpdateProfile = (updatedData) => {
+    setStudentProfile(prev => {
+      const updated = { ...prev, ...updatedData };
+      try {
+        localStorage.setItem('skillora_student_profile', JSON.stringify(updated));
+      } catch (e) {}
 
-  const handleUpdateProfile = async (updatedData) => {
-    try {
-      const res = await fetch('/api/student/profile', {
+      fetch('http://localhost:5000/api/student/profile', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(updatedData)
-      });
-      const data = await res.json();
-      if (data.profile) {
-        setStudentProfile(data.profile);
-      }
-    } catch (err) {
-      console.error("Error updating profile:", err);
-    }
+        body: JSON.stringify(updated)
+      }).catch(() => {});
+
+      return updated;
+    });
   };
 
-  const handleSelectFeature = (featId) => {
-    if (featId === 'local-lang') {
+  const handleSelectSubFeature = (subId) => {
+    if (subId === 'language-translation') {
       setIsTranslatorOpen(true);
-    } else if (featId === 'elevator-pitch') {
-      setActiveTab('mock-interview');
-    } else if (featId === 'weekly-nudge' || featId === 'peer-benchmark' || featId === 'practice-app') {
-      setActiveTab('dashboard');
-    } else {
-      setActiveTab(featId);
+      return;
     }
+    setActiveSubFeature(subId);
+    setActiveTab('feature');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const handleLogout = () => {
+    alert("You have securely logged out from Skillora.");
+    setActiveTab('home');
+  };
+
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: 'var(--bg-subtle)' }}>
       
-      {/* Top Navbar */}
+      {/* Top Navigation Bar */}
       <Navbar 
         activeTab={activeTab}
         setActiveTab={(tab) => {
-          if (tab === 'local-lang') setIsTranslatorOpen(true);
-          else setActiveTab(tab);
+          setActiveTab(tab);
+          if (tab === 'home') {
+            setActiveSubFeature('home');
+          }
         }}
         language={language}
         setLanguage={setLanguage}
-        voiceEnabled={voiceEnabled}
-        setVoiceEnabled={setVoiceEnabled}
         studentProfile={studentProfile}
+        onOpenModal={(modalName) => setActiveModal(modalName)}
+        onOpenAuthModal={() => setIsAuthModalOpen(true)}
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+        onSelectSubFeature={handleSelectSubFeature}
+        onToggleSidebarMobile={() => setIsMobileSidebarOpen(!isMobileSidebarOpen)}
+        isMobileSidebarOpen={isMobileSidebarOpen}
       />
 
-      {/* Main View Router */}
-      <main style={{ flexGrow: 1 }}>
-        {activeTab === 'home' && (
-          <HeroLanding 
-            onSelectFeature={handleSelectFeature}
+      {/* Main Content Layout with Left Sidebar */}
+      <div style={{
+        display: 'flex',
+        flexGrow: 1,
+        maxWidth: '1440px',
+        width: '100%',
+        margin: '0 auto'
+      }}>
+        {/* Left Sidebar */}
+        <div style={{
+          display: (isMobileSidebarOpen || window.innerWidth > 900) ? 'block' : 'none'
+        }}>
+          <LeftSidebar 
+            activeSubFeature={activeSubFeature}
+            onSelectSubFeature={handleSelectSubFeature}
+            onLogout={handleLogout}
             language={language}
           />
-        )}
+        </div>
 
-        {activeTab === 'dashboard' && (
-          <Dashboard 
-            studentProfile={studentProfile}
-            onUpdateProfile={handleUpdateProfile}
-            onNavigate={setActiveTab}
-          />
-        )}
+        {/* Main Content Area */}
+        <main style={{ flexGrow: 1, width: '100%', minWidth: 0 }}>
+          {activeTab === 'home' && (
+            <HeroLanding 
+              onSelectSubFeature={handleSelectSubFeature}
+              studentProfile={studentProfile}
+              onNavigateProgress={() => handleSelectSubFeature('growth-map')}
+              searchQuery={searchQuery}
+            />
+          )}
 
-        {activeTab === 'skill-gap' && (
-          <SkillGap 
-            studentProfile={studentProfile}
-            onNavigate={setActiveTab}
-          />
-        )}
+          {activeTab === 'feature' && (
+            <SubFeatureViewer 
+              subFeatureId={activeSubFeature}
+              studentProfile={studentProfile}
+              onNavigate={(tab) => handleSelectSubFeature(tab)}
+              onOpenTranslator={() => setIsTranslatorOpen(true)}
+              onUpdateProfile={handleUpdateProfile}
+              language={language}
+            />
+          )}
 
-        {activeTab === 'resume-tools' && (
-          <ResumeTools 
-            studentProfile={studentProfile}
-          />
-        )}
-
-        {activeTab === 'mock-interview' && (
-          <MockInterview 
-            studentProfile={studentProfile}
-            voiceEnabled={voiceEnabled}
-          />
-        )}
-
-        {activeTab === 'govt-schemes' && (
-          <GovtSchemes 
-            studentProfile={studentProfile}
-          />
-        )}
-
-        {activeTab === 'learning' && (
-          <LearningHub />
-        )}
-
-        {activeTab === 'career-chat' && (
-          <CareerChatbot 
-            language={language}
-          />
-        )}
-
-        {activeTab === 'tpo' && (
-          <TpoDashboard />
-        )}
-      </main>
+          {activeTab === 'career-chat' && (
+            <CareerChatbot 
+              language={language}
+            />
+          )}
+        </main>
+      </div>
 
       {/* Footer */}
       <Footer 
-        onGetStarted={() => { setActiveTab('dashboard'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+        onGetStarted={() => { handleSelectSubFeature('academic-guidance'); }}
         language={language}
       />
 
-      {/* Regional Language Translator Modal */}
+      {/* Floating AI Chatbot Widget (Bottom-Right) */}
+      <FloatingChatbotWidget language={language} />
+
+      {/* Auth & Registration Modal */}
+      <AuthModal
+        isOpen={isAuthModalOpen}
+        onClose={() => setIsAuthModalOpen(false)}
+        onRegisterSuccess={(registeredData) => {
+          handleUpdateProfile(registeredData);
+          handleSelectSubFeature('profile-analysis');
+        }}
+      />
+
+      {/* Language Translator Modal */}
       <TranslatorModal 
         isOpen={isTranslatorOpen}
         onClose={() => setIsTranslatorOpen(false)}
+      />
+
+      {/* Navbar Modals (About Us, Why Us, Contact, Profile) */}
+      <NavbarModals 
+        activeModal={activeModal}
+        onClose={() => setActiveModal(null)}
+        studentProfile={studentProfile}
+        onUpdateProfile={handleUpdateProfile}
+        onOpenAuthModal={() => setIsAuthModalOpen(true)}
+        language={language}
       />
 
     </div>
