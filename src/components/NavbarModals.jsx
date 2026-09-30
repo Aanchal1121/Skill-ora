@@ -333,6 +333,7 @@ export default function NavbarModals({
         {/* ===================================================================== */}
         {activeModal === 'why-us' && (
           <WhyUsPage
+            studentProfile={studentProfile}
             onStartJourney={() => {
               onClose();
               if (onOpenAuthModal) onOpenAuthModal();

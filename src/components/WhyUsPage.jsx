@@ -20,7 +20,7 @@ import {
 } from 'lucide-react';
 import { t } from '../utils/i18n';
 
-export default function WhyUsPage({ onStartJourney, onNavigate, language = 'English' }) {
+export default function WhyUsPage({ onStartJourney, onNavigate, language = 'English', studentProfile }) {
   const keyBenefits = [
     {
       id: 'guidance',

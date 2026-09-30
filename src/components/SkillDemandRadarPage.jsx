@@ -13,13 +13,15 @@ import {
   Target
 } from 'lucide-react';
 
+import { getNormalizedSkills, formatSkillsList } from '../utils/profileUtils';
+
 export default function SkillDemandRadarPage({ studentProfile, onNavigate }) {
   const [selectedIndustry, setSelectedIndustry] = useState('all');
   const [selectedTimePeriod, setSelectedTimePeriod] = useState('30d');
   const [hoveredBarIndex, setHoveredBarIndex] = useState(null);
 
   const targetRole = studentProfile?.targetRole || 'Java Backend Developer';
-  const studentSkills = studentProfile?.skills || ['Java', 'C++', 'SQL', 'HTML'];
+  const studentSkills = getNormalizedSkills(studentProfile?.skills);
 
   // Master Market Dataset by Industry
   const skillDatasets = {
@@ -260,7 +262,7 @@ export default function SkillDemandRadarPage({ studentProfile, onNavigate }) {
           </div>
 
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '12px', fontSize: '0.8rem', color: '#7A6F8A' }}>
-            <div>* Green bars indicate skills verified in your profile ({studentSkills.join(', ')})</div>
+            <div>* Green bars indicate skills verified in your profile ({formatSkillsList(studentSkills, ', ', 4)})</div>
             <div>Hover or tap bars for detailed listing numbers</div>
           </div>
         </div>

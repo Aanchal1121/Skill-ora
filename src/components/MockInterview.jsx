@@ -42,6 +42,8 @@ import {
   Plus
 } from 'lucide-react';
 
+import { getNormalizedSkills, formatSkillsList } from '../utils/profileUtils';
+
 // =============================================================================
 // COMPREHENSIVE FAQ QUESTION BANK DATA
 // =============================================================================
@@ -134,8 +136,10 @@ export default function MockInterview({ studentProfile, voiceEnabled }) {
     degree: studentProfile?.degree || 'B.Tech',
     branch: studentProfile?.branch || 'Computer Science & Engineering',
     targetRole: studentProfile?.targetRole || studentProfile?.careerGoal || 'Full-Stack Developer',
-    skills: studentProfile?.skills || ['Java', 'React', 'Spring Boot', 'SQL', 'Git', 'REST APIs'],
-    projects: studentProfile?.projects || ['E-Commerce Microservices Backend', 'AI Resume Matcher']
+    skills: getNormalizedSkills(studentProfile?.skills),
+    projects: Array.isArray(studentProfile?.projects)
+      ? studentProfile.projects.map(p => (typeof p === 'object' && p ? (p.name || p.title || 'Project') : String(p)))
+      : (typeof studentProfile?.projects === 'string' ? studentProfile.projects.split(',').map(s=>s.trim()).filter(Boolean) : ['E-Commerce Microservices Backend', 'AI Resume Matcher'])
   };
 
   // ---------------------------------------------------------------------------

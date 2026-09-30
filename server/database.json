@@ -2,7 +2,7 @@
   "studentProfile": {
     "id": "STU-7821",
     "name": "Ananya Roy",
-    "email": "aanchal.sharma@college.edu.in",
+    "email": "ananya.roy@college.edu.in",
     "college": "Institute of Technology & Engineering",
     "tier": "Tier 2 College",
     "branch": "Computer Science & Engineering",
@@ -119,7 +119,36 @@
     "preferredIndustry": "IT & Software",
     "confidenceTech": "4",
     "confidenceComm": "4",
-    "readiness": "On Track"
+    "readiness": "On Track",
+    "gradYear": "2026",
+    "sgpaHistory": [
+      {
+        "semester": "Sem 1",
+        "sgpa": 8
+      },
+      {
+        "semester": "Sem 2",
+        "sgpa": 8.2
+      },
+      {
+        "semester": "Sem 3",
+        "sgpa": 8.1
+      },
+      {
+        "semester": "Sem 4",
+        "sgpa": 8.5
+      },
+      {
+        "semester": "Sem 5",
+        "sgpa": 8.6
+      },
+      {
+        "semester": "Sem 6",
+        "sgpa": 8.8
+      }
+    ],
+    "class10Marks": "94.2%",
+    "class12Marks": "91.8%"
   },
   "govtSchemes": [
     {

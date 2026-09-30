@@ -37,6 +37,8 @@ import {
   Award as StarIcon
 } from 'lucide-react';
 
+import { getNormalizedSkills, formatSkillsList } from '../utils/profileUtils';
+
 export default function ElevatorPitchPage({ studentProfile, onNavigate }) {
   // ---------------------------------------------------------------------------
   // Profile defaults fallback
@@ -49,11 +51,10 @@ export default function ElevatorPitchPage({ studentProfile, onNavigate }) {
     semester: studentProfile?.semester || '6th Semester',
     cgpa: studentProfile?.cgpa || '8.6',
     careerGoal: studentProfile?.careerGoal || 'Java Backend Developer',
-    skills: studentProfile?.skills || ['Java', 'Spring Boot', 'REST APIs', 'SQL', 'Git', 'React'],
-    projects: studentProfile?.projects || [
-      'E-Commerce Microservices Backend',
-      'AI Resume Screening Tool'
-    ],
+    skills: getNormalizedSkills(studentProfile?.skills),
+    projects: Array.isArray(studentProfile?.projects)
+      ? studentProfile.projects.map(p => (typeof p === 'object' && p ? (p.name || p.title || 'Project') : String(p)))
+      : (typeof studentProfile?.projects === 'string' ? studentProfile.projects.split(',').map(s=>s.trim()).filter(Boolean) : ['E-Commerce Microservices Backend', 'AI Resume Screening Tool']),
     experience: studentProfile?.experience || 'Software Developer Intern at TechCorp (3 mos)',
     targetIndustry: studentProfile?.targetIndustry || 'Fintech / Enterprise Software'
   };
@@ -64,8 +65,9 @@ export default function ElevatorPitchPage({ studentProfile, onNavigate }) {
   const generatePitchText = (purpose, tone) => {
     const name = profile.name;
     const degreeBranch = `${profile.degree} in ${profile.branch}`;
-    const topSkills = profile.skills.slice(0, 3).join(', ');
-    const mainProject = profile.projects[0] || 'scalable web applications';
+    const topSkills = formatSkillsList(profile.skills, ', ', 3);
+    const rawProj = profile.projects[0] || 'scalable web applications';
+    const mainProject = typeof rawProj === 'object' ? (rawProj.name || rawProj.title || 'scalable web applications') : rawProj;
     const goal = profile.careerGoal;
 
     if (purpose === 'general') {
