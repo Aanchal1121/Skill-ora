@@ -346,7 +346,7 @@ export default function MentorGuidancePage({
             </div>
             <div>
               <h3 style={{ fontSize: '1.05rem', fontWeight: 800, color: '#2D1B4E' }}>
-                AI Mentor — Skillora Companion
+                AI Mentor — SkillAura Companion
               </h3>
               <span style={{ fontSize: '0.76rem', color: '#059669', fontWeight: 700 }}>
                 ● Active Listening ({language})
@@ -478,7 +478,7 @@ export default function MentorGuidancePage({
           <div>
             <h5 style={{ fontSize: '0.92rem', fontWeight: 800, color: '#2D1B4E' }}>Need Additional Human Support?</h5>
             <p style={{ fontSize: '0.82rem', color: '#7A6F8A' }}>
-              Skillora AI is an assistant. Reach out to your college student counselor or trusted mentor when in distress.
+              SkillAura AI is an assistant. Reach out to your college student counselor or trusted mentor when in distress.
             </p>
           </div>
         </div>

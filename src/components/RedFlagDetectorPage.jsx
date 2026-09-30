@@ -175,14 +175,14 @@ Required Skills: Java Core, SQL, REST APIs, Git. No registration fee required.`)
           : `GOOD MATCH: This internship is relevant to your selected ${targetRole} goal and matches your current ${matchedSkills.join(', ')} skills. Verify internship duration and stipend terms before accepting an offer.`,
         verification: {
           performed: true,
-          sources: ['Official Corporate Domain Index', 'ICANN Domain Registry Check', 'Skillora Fraud Index'],
+          sources: ['Official Corporate Domain Index', 'ICANN Domain Registry Check', 'SkillAura Fraud Index'],
           confirmedDetails: riskLevel === 'high' ? [] : ['Official TCS Corporate Domain Match', 'Verified Office Address Bangalore'],
           unverifiedDetails: riskLevel === 'high' ? ['Telegram channel identity unverified', 'UPI Payment gateway address suspicious'] : ['Recruiter personal email domain']
         },
         recommendedActions: riskLevel === 'high' ? [
           'Do NOT pay any registration or processing fees.',
-          'Report the suspicious link to Skillora support team.',
-          'Explore verified opportunities on the official Skillora Jobs portal.'
+          'Report the suspicious link to SkillAura support team.',
+          'Explore verified opportunities on the official SkillAura Jobs portal.'
         ] : [
           'Apply directly through the employer\'s official corporate careers website.',
           'Confirm written internship contract duration and stipend details.',
@@ -501,7 +501,7 @@ Required Skills: Java Core, SQL, REST APIs, Git. No registration fee required.`)
               </button>
               <button onClick={() => onNavigate('internships-jobs')} className="btn-primary">
                 <Briefcase size={16} />
-                <span>Explore Verified Jobs on Skillora</span>
+                <span>Explore Verified Jobs on SkillAura</span>
               </button>
             </div>
           </div>

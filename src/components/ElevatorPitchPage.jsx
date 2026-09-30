@@ -124,7 +124,7 @@ export default function ElevatorPitchPage({ studentProfile, onNavigate }) {
   const [pitchText, setPitchText] = useState(() => generatePitchText('general', 'professional'));
   const [savedPitches, setSavedPitches] = useState(() => {
     try {
-      const saved = localStorage.getItem('skillora_saved_pitches');
+      const saved = localStorage.getItem('skillaura_saved_pitches');
       return saved ? JSON.parse(saved) : [
         {
           id: '1',
@@ -164,7 +164,7 @@ export default function ElevatorPitchPage({ studentProfile, onNavigate }) {
   // Practice History State
   const [practiceHistory, setPracticeHistory] = useState(() => {
     try {
-      const hist = localStorage.getItem('skillora_pitch_history');
+      const hist = localStorage.getItem('skillaura_pitch_history');
       return hist ? JSON.parse(hist) : [
         {
           id: 'hist-1',
@@ -286,7 +286,7 @@ export default function ElevatorPitchPage({ studentProfile, onNavigate }) {
     setPracticeHistory(prev => {
       const updated = [newAttempt, ...prev];
       try {
-        localStorage.setItem('skillora_pitch_history', JSON.stringify(updated));
+        localStorage.setItem('skillaura_pitch_history', JSON.stringify(updated));
       } catch (e) {}
       return updated;
     });
@@ -377,7 +377,7 @@ export default function ElevatorPitchPage({ studentProfile, onNavigate }) {
     setSavedPitches(prev => {
       const updated = [newPitch, ...prev];
       try {
-        localStorage.setItem('skillora_saved_pitches', JSON.stringify(updated));
+        localStorage.setItem('skillaura_saved_pitches', JSON.stringify(updated));
       } catch (e) {}
       return updated;
     });
@@ -394,7 +394,7 @@ export default function ElevatorPitchPage({ studentProfile, onNavigate }) {
   const handleDeleteHistory = () => {
     setPracticeHistory([]);
     try {
-      localStorage.removeItem('skillora_pitch_history');
+      localStorage.removeItem('skillaura_pitch_history');
     } catch (e) {}
     setShowDeleteModal(false);
   };
@@ -435,7 +435,7 @@ export default function ElevatorPitchPage({ studentProfile, onNavigate }) {
                 alignItems: 'center',
                 gap: '6px'
               }}>
-                <Sparkles size={14} /> SKILLORA COMMUNICATION LAB
+                <Sparkles size={14} /> SKILLAURA COMMUNICATION LAB
               </span>
               <span style={{ fontSize: '0.82rem', color: '#6B7280', fontWeight: '500' }}>
                  placement readiness
@@ -451,7 +451,7 @@ export default function ElevatorPitchPage({ studentProfile, onNavigate }) {
               30-Second Elevator Pitch
             </h1>
             <p style={{ margin: 0, color: '#4B5563', fontSize: '0.95rem' }}>
-              Craft a captivating, 30-second self-introduction based on your Skillora profile and hone your verbal delivery with AI feedback.
+              Craft a captivating, 30-second self-introduction based on your SkillAura profile and hone your verbal delivery with AI feedback.
             </p>
           </div>
 
@@ -518,7 +518,7 @@ export default function ElevatorPitchPage({ studentProfile, onNavigate }) {
             </div>
           </div>
           <div style={{ fontSize: '0.78rem', color: '#9333EA', fontWeight: '600', background: '#F3E8FF', padding: '4px 10px', borderRadius: '12px' }}>
-            Auto-linked from Skillora Profile
+            Auto-linked from SkillAura Profile
           </div>
         </div>
 

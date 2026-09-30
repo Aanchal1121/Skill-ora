@@ -100,7 +100,7 @@ export default function CareerRoadmapPage({ studentProfile, onNavigate }) {
         moduleLabel: 'Skill Gap Analysis',
         tasks: [
           { id: 101, text: 'Complete Java Syntax & OOP Core Assessment', completed: true },
-          { id: 102, text: 'Solve 25 Java Data Structures problems on Skillora', completed: true }
+          { id: 102, text: 'Solve 25 Java Data Structures problems on SkillAura', completed: true }
         ]
       },
       {
@@ -169,7 +169,7 @@ export default function CareerRoadmapPage({ studentProfile, onNavigate }) {
         tasks: [
           { id: 501, text: 'Run ATS Resume Scanner for Java Backend roles', completed: true },
           { id: 502, text: 'Attempt 1 AI Technical Mock Interview session', completed: true },
-          { id: 503, text: 'Apply to 5 verified Java Backend internships on Skillora', completed: false }
+          { id: 503, text: 'Apply to 5 verified Java Backend internships on SkillAura', completed: false }
         ]
       }
     ],
@@ -272,7 +272,7 @@ export default function CareerRoadmapPage({ studentProfile, onNavigate }) {
         targetModule: 'skill-gap',
         moduleLabel: 'SQL Skill Assessment',
         tasks: [
-          { id: 101, text: 'Complete SQL Window Functions assessment on Skillora', completed: true },
+          { id: 101, text: 'Complete SQL Window Functions assessment on SkillAura', completed: true },
           { id: 102, text: 'Write queries to compute Monthly Recurring Revenue (MRR)', completed: true }
         ]
       },
@@ -339,7 +339,7 @@ export default function CareerRoadmapPage({ studentProfile, onNavigate }) {
         moduleLabel: 'Internships & Jobs',
         tasks: [
           { id: 501, text: 'Scan resume for Data Analyst ATS compliance', completed: true },
-          { id: 502, text: 'Apply to 5 verified Data Analyst internships on Skillora', completed: false }
+          { id: 502, text: 'Apply to 5 verified Data Analyst internships on SkillAura', completed: false }
         ]
       }
     ],
@@ -422,7 +422,7 @@ export default function CareerRoadmapPage({ studentProfile, onNavigate }) {
         moduleLabel: 'Resume Scanner',
         tasks: [
           { id: 501, text: 'Run ATS Resume Scanner for Cloud Engineer roles', completed: true },
-          { id: 502, text: 'Apply to 5 verified Cloud Engineer positions on Skillora', completed: false }
+          { id: 502, text: 'Apply to 5 verified Cloud Engineer positions on SkillAura', completed: false }
         ]
       }
     ]

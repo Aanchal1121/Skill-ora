@@ -475,7 +475,7 @@ export default function ProjectLabPage({ studentProfile, onNavigate }) {
                     1. Environment Setup Commands
                   </h4>
                   <div style={{ background: '#2D1B4E', color: '#F6DCEC', padding: '12px', borderRadius: '10px', fontFamily: 'monospace', fontSize: '0.82rem', marginBottom: '14px' }}>
-                    $ mvn archetype:generate -DgroupId=com.skillora -DartifactId=backend-service<br/>
+                    $ mvn archetype:generate -DgroupId=com.skillaura -DartifactId=backend-service<br/>
                     $ docker run --name postgres-db -e POSTGRES_PASSWORD=secret -d -p 5432:5432 postgres
                   </div>
 

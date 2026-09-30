@@ -227,6 +227,179 @@ app.post('/api/ai/chat', (req, res) => {
   res.json({ reply, timestamp: new Date().toLocaleTimeString() });
 });
 
-app.listen(PORT, () => {
-  console.log(`🚀 CareerLeap Backend Server listening on http://localhost:${PORT}`);
+// Opportunities & Job Listings APIs
+app.get('/api/opportunities', (req, res) => {
+  const db = getDb();
+  res.json(db.opportunities || []);
 });
+
+app.get('/api/opportunities/recommended', (req, res) => {
+  const db = getDb();
+  const student = db.studentProfile || {};
+  const recommended = (db.opportunities || []).map(opp => {
+    const matchingSkills = (opp.requiredSkills || []).filter(s =>
+      (student.skills || []).some(sk => (sk.name || s).toLowerCase().includes(s.toLowerCase()))
+    );
+    return {
+      ...opp,
+      matchExplanation: `Matches ${matchingSkills.length} of your target skills (${matchingSkills.join(', ') || 'General Match'})`,
+      matchingSkills
+    };
+  });
+  res.json(recommended);
+});
+
+app.get('/api/opportunities/saved', (req, res) => {
+  const db = getDb();
+  const saved = (db.opportunities || []).filter(o => o.isSaved);
+  res.json(saved);
+});
+
+app.post('/api/opportunities/save', (req, res) => {
+  const db = getDb();
+  const { opportunityId, isSaved } = req.body;
+  db.opportunities = (db.opportunities || []).map(opp =>
+    opp.id === opportunityId ? { ...opp, isSaved } : opp
+  );
+  saveDb(db);
+  res.json({ success: true, opportunities: db.opportunities });
+});
+
+app.get('/api/applications', (req, res) => {
+  const db = getDb();
+  const tracked = (db.opportunities || []).filter(o => o.isSaved || o.status !== 'Saved');
+  res.json(tracked);
+});
+
+app.patch('/api/applications/:id/status', (req, res) => {
+  const db = getDb();
+  const { id } = req.params;
+  const { status } = req.body;
+  db.opportunities = (db.opportunities || []).map(opp =>
+    opp.id == id ? { ...opp, status } : opp
+  );
+  saveDb(db);
+  res.json({ success: true });
+});
+
+app.get('/api/opportunities/:id', (req, res) => {
+  const db = getDb();
+  const opp = (db.opportunities || []).find(o => o.id == req.params.id);
+  if (opp) res.json(opp);
+  else res.status(404).json({ error: 'Opportunity not found' });
+});
+
+// Support Center, Feedback & Rating APIs
+app.get('/api/support/tickets', (req, res) => {
+  const db = getDb();
+  res.json({ tickets: db.supportTickets || [] });
+});
+
+app.post('/api/support/tickets', (req, res) => {
+  const db = getDb();
+  const newTicket = req.body;
+  db.supportTickets = [newTicket, ...(db.supportTickets || [])];
+  saveDb(db);
+  res.json({ success: true, ticket: newTicket });
+});
+
+app.patch('/api/support/tickets/:id', (req, res) => {
+  const db = getDb();
+  const { id } = req.params;
+  const { status, responseMessage } = req.body;
+  db.supportTickets = (db.supportTickets || []).map(t => {
+    if (t.id === id) {
+      const updatedResponses = responseMessage ? [
+        ...(t.responses || []),
+        { sender: 'SkillAura TPO / Support Admin', message: responseMessage, timestamp: new Date().toLocaleString() }
+      ] : (t.responses || []);
+      return { ...t, status: status || t.status, responses: updatedResponses };
+    }
+    return t;
+  });
+  saveDb(db);
+  res.json({ success: true, tickets: db.supportTickets });
+});
+
+app.post('/api/support/tickets/:id/reopen', (req, res) => {
+  const db = getDb();
+  const { id } = req.params;
+  db.supportTickets = (db.supportTickets || []).map(t =>
+    t.id === id ? { ...t, status: 'Open' } : t
+  );
+  saveDb(db);
+  res.json({ success: true });
+});
+
+app.get('/api/feedback', (req, res) => {
+  const db = getDb();
+  res.json({ feedback: db.feedbackList || [] });
+});
+
+app.post('/api/feedback', (req, res) => {
+  const db = getDb();
+  const item = req.body;
+  db.feedbackList = [item, ...(db.feedbackList || [])];
+  saveDb(db);
+  res.json({ success: true });
+});
+
+app.get('/api/ratings', (req, res) => {
+  const db = getDb();
+  const list = db.ratingsList || [];
+  const total = list.length;
+  const sum = list.reduce((acc, r) => acc + (r.rating || 5), 0);
+  const avg = total > 0 ? (sum / total).toFixed(1) : '4.8';
+  res.json({
+    avgRating: parseFloat(avg),
+    totalRatings: total || 124,
+    ratings: list
+  });
+});
+
+app.post('/api/ratings', (req, res) => {
+  const db = getDb();
+  const newRating = req.body;
+  const existingIndex = (db.ratingsList || []).findIndex(r => r.studentId === newRating.studentId);
+  if (existingIndex >= 0) {
+    db.ratingsList[existingIndex] = newRating;
+  } else {
+    db.ratingsList = [newRating, ...(db.ratingsList || [])];
+  }
+  saveDb(db);
+  res.json({ success: true });
+});
+
+// Mind Games & Puzzles Endpoints
+app.get('/api/mindgames/stats', (req, res) => {
+  const db = getDb();
+  res.json(db.mindGamesStats || {});
+});
+
+app.post('/api/mindgames/save-score', (req, res) => {
+  const db = getDb();
+  db.mindGamesStats = {
+    ...db.mindGamesStats,
+    ...req.body
+  };
+  saveDb(db);
+  res.json({ success: true, mindGamesStats: db.mindGamesStats });
+});
+
+app.get('/api/mindgames/leaderboard', (req, res) => {
+  const db = getDb();
+  const stats = db.mindGamesStats || {};
+  res.json({
+    leaderboard: [
+      { rank: 1, name: db.studentProfile?.name || 'Ananya Roy', xp: stats.totalXP || 840, streak: stats.dailyStreak || 5 },
+      { rank: 2, name: 'Rohan Sharma', xp: 720, streak: 6 },
+      { rank: 3, name: 'Priya Patel', xp: 680, streak: 4 },
+      { rank: 4, name: 'Vikram Verma', xp: 640, streak: 3 }
+    ]
+  });
+});
+
+app.listen(PORT, () => {
+  console.log(`🚀 SkillAura Backend Server listening on http://localhost:${PORT}`);
+});
+

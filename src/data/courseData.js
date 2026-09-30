@@ -6,7 +6,7 @@ export const COURSE_RECOMMENDATIONS = {
     {
       id: "course-sql-free-1",
       name: "SQL Fundamentals for Data Analytics",
-      provider: "SkillOra Free Academy / NPTEL",
+      provider: "SkillAura Free Academy / NPTEL",
       skillCovered: "SQL",
       description: "Learn relational database concepts, SELECT statements, WHERE filtering, GROUP BY aggregations, and multi-table JOINs.",
       isFree: true,
@@ -34,7 +34,7 @@ export const COURSE_RECOMMENDATIONS = {
     {
       id: "course-sql-paid-1",
       name: "Advanced SQL & Database Management Bootcamp",
-      provider: "Udemy / SkillOra Pro",
+      provider: "Udemy / SkillAura Pro",
       skillCovered: "SQL",
       description: "Master subqueries, Window functions, CTEs, Indexing, and query performance tuning for high-volume databases.",
       isFree: false,
@@ -65,7 +65,7 @@ export const COURSE_RECOMMENDATIONS = {
     {
       id: "course-py-free-1",
       name: "Python for Data Analysis Basics",
-      provider: "Coursera (IBM / SkillOra)",
+      provider: "Coursera (IBM / SkillAura)",
       skillCovered: "Python",
       description: "Learn Python data types, lists, dictionaries, Pandas DataFrames, NumPy arrays, and Matplotlib visualization.",
       isFree: true,
@@ -189,7 +189,7 @@ export const COURSE_RECOMMENDATIONS = {
     {
       id: "course-comm-free-1",
       name: "Business Communication & Data Storytelling",
-      provider: "SkillOra Free Academy",
+      provider: "SkillAura Free Academy",
       skillCovered: "Communication",
       description: "Articulate data findings, structure executive slide presentations, and handle stakeholder Q&A rounds.",
       isFree: true,
@@ -198,7 +198,7 @@ export const COURSE_RECOMMENDATIONS = {
       difficulty: "Beginner",
       certificate: true,
       format: "Interactive video modules & Mock pitch tests",
-      url: "https://skillora.in/courses/comm"
+      url: "https://skillaura.in/courses/comm"
     }
   ],
 
@@ -254,7 +254,7 @@ export const COURSE_RECOMMENDATIONS = {
     {
       id: "course-dsa-paid-1",
       name: "Mastering Data Structures & Algorithms for SDE Roles",
-      provider: "GeeksforGeeks / SkillOra Pro",
+      provider: "GeeksforGeeks / SkillAura Pro",
       skillCovered: "Data Structures",
       description: "In-depth practice of 150+ LeetCode Medium/Hard DSA problems with live mentor support.",
       isFree: false,

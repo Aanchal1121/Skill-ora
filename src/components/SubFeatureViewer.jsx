@@ -50,11 +50,17 @@ import JobsOpportunitiesPage from './JobsOpportunitiesPage';
 import JobAlertsPage from './JobAlertsPage';
 import ProjectLabPage from './ProjectLabPage';
 import GlobalSearchResultsPage from './GlobalSearchResultsPage';
+import SupportFeedbackPage from './SupportFeedbackPage';
+import WhyUsPage from './WhyUsPage';
+import MindGamesPage from './MindGamesPage';
+import BackButton from './BackButton';
 
 export default function SubFeatureViewer({ 
   subFeatureId, 
   studentProfile, 
   onNavigate,
+  onGoBack,
+  canGoBack,
   onOpenTranslator,
   onUpdateProfile,
   language = 'English'
@@ -65,76 +71,95 @@ export default function SubFeatureViewer({
   const [companyJD, setCompanyJD] = useState('');
   const [analyzedJDResult, setAnalyzedJDResult] = useState(null);
 
+  const wrapWithBack = (element) => (
+    <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '16px 20px 0 20px' }}>
+      {onGoBack && (
+        <BackButton onGoBack={onGoBack} label="Back to Previous Page" />
+      )}
+      {element}
+    </div>
+  );
+
   // If subFeatureId corresponds to one of the major dedicated components:
+  if (subFeatureId === 'mind-games' || subFeatureId === 'puzzles' || subFeatureId === 'mind-games-puzzles') {
+    return wrapWithBack(<MindGamesPage studentProfile={studentProfile} onNavigate={onNavigate} onGoBack={onGoBack} language={language} />);
+  }
   if (subFeatureId === 'project-lab' || subFeatureId === 'project-ideas') {
-    return <ProjectLabPage studentProfile={studentProfile} onNavigate={onNavigate} />;
+    return wrapWithBack(<ProjectLabPage studentProfile={studentProfile} onNavigate={onNavigate} onGoBack={onGoBack} />);
   }
   if (subFeatureId === 'job-alerts') {
-    return <JobAlertsPage studentProfile={studentProfile} onNavigate={onNavigate} />;
+    return wrapWithBack(<JobAlertsPage studentProfile={studentProfile} onNavigate={onNavigate} onGoBack={onGoBack} />);
   }
-  if (subFeatureId === 'internships-jobs') {
-    return <JobsOpportunitiesPage studentProfile={studentProfile} onNavigate={onNavigate} />;
+  if (subFeatureId === 'internships-jobs' || subFeatureId === 'jobs-opportunities' || subFeatureId === 'jobs' || subFeatureId === 'opportunities') {
+    return wrapWithBack(<JobsOpportunitiesPage studentProfile={studentProfile} onNavigate={onNavigate} onGoBack={onGoBack} />);
   }
   if (subFeatureId === 'academic-guidance' || subFeatureId === 'career-explorer') {
-    return <CareerRoadmapPage studentProfile={studentProfile} onNavigate={onNavigate} />;
+    return wrapWithBack(<CareerRoadmapPage studentProfile={studentProfile} onNavigate={onNavigate} onGoBack={onGoBack} />);
   }
   if (subFeatureId === 'profile-analysis') {
-    return (
+    return wrapWithBack(
       <StudentProfileDashboard 
         studentProfile={studentProfile} 
         onNavigate={onNavigate} 
+        onGoBack={onGoBack}
         onUpdateProfile={onUpdateProfile} 
         language={language} 
       />
     );
   }
   if (subFeatureId === 'skill-demand') {
-    return <SkillDemandRadarPage studentProfile={studentProfile} onNavigate={onNavigate} />;
+    return wrapWithBack(<SkillDemandRadarPage studentProfile={studentProfile} onNavigate={onNavigate} onGoBack={onGoBack} />);
   }
   if (subFeatureId === 'peer-benchmarking') {
-    return <PeerBenchmarkingPage studentProfile={studentProfile} onNavigate={onNavigate} />;
+    return wrapWithBack(<PeerBenchmarkingPage studentProfile={studentProfile} onNavigate={onNavigate} onGoBack={onGoBack} />);
   }
   if (subFeatureId === 'employability-score') {
-    return <EmployabilityScorePage studentProfile={studentProfile} onNavigate={onNavigate} />;
+    return wrapWithBack(<EmployabilityScorePage studentProfile={studentProfile} onNavigate={onNavigate} onGoBack={onGoBack} />);
   }
   if (subFeatureId === 'red-flag-detector') {
-    return <RedFlagDetectorPage studentProfile={studentProfile} onNavigate={onNavigate} />;
+    return wrapWithBack(<RedFlagDetectorPage studentProfile={studentProfile} onNavigate={onNavigate} onGoBack={onGoBack} />);
   }
   if (subFeatureId === 'mentor-guidance') {
-    return <MentorGuidancePage studentProfile={studentProfile} onNavigate={onNavigate} />;
+    return wrapWithBack(<MentorGuidancePage studentProfile={studentProfile} onNavigate={onNavigate} onGoBack={onGoBack} />);
   }
   if (subFeatureId === 'growth-map') {
-    return <GrowthMap studentProfile={studentProfile} onNavigate={onNavigate} />;
+    return wrapWithBack(<GrowthMap studentProfile={studentProfile} onNavigate={onNavigate} onGoBack={onGoBack} />);
   }
   if (subFeatureId === 'connected-jobs-network') {
-    return <ConnectedJobsNetwork studentProfile={studentProfile} onNavigate={onNavigate} />;
+    return wrapWithBack(<ConnectedJobsNetwork studentProfile={studentProfile} onNavigate={onNavigate} onGoBack={onGoBack} />);
   }
   if (subFeatureId === 'skill-gap') {
-    return <SkillGap studentProfile={studentProfile} onNavigate={onNavigate} />;
+    return wrapWithBack(<SkillGap studentProfile={studentProfile} onNavigate={onNavigate} onGoBack={onGoBack} />);
   }
   if (subFeatureId === 'resume-assist' || subFeatureId === 'resume-analyzer' || subFeatureId === 'resume-improvement' || subFeatureId === 'rejected-resume' || subFeatureId === 'company-resume' || subFeatureId === 'jd-analyzer' || subFeatureId === 'resume-reference') {
-    return <ResumeTools studentProfile={studentProfile} defaultTab={subFeatureId} />;
+    return wrapWithBack(<ResumeTools studentProfile={studentProfile} defaultTab={subFeatureId} onGoBack={onGoBack} />);
   }
   if (subFeatureId === 'mock-interviews') {
-    return <MockInterview studentProfile={studentProfile} />;
+    return wrapWithBack(<MockInterview studentProfile={studentProfile} onGoBack={onGoBack} />);
   }
   if (subFeatureId === 'communication-skills' || subFeatureId === 'elevator-pitch') {
-    return <ElevatorPitchPage studentProfile={studentProfile} onNavigate={onNavigate} />;
+    return wrapWithBack(<ElevatorPitchPage studentProfile={studentProfile} onNavigate={onNavigate} onGoBack={onGoBack} />);
   }
   if (subFeatureId === 'govt-opportunities-schemes' || subFeatureId === 'govt-jobs' || subFeatureId === 'govt-schemes') {
-    return <GovtSchemes studentProfile={studentProfile} />;
+    return wrapWithBack(<GovtSchemes studentProfile={studentProfile} onGoBack={onGoBack} />);
   }
   if (subFeatureId === 'free-courses' || subFeatureId === 'project-ideas') {
-    return <LearningHub defaultTab={subFeatureId} />;
+    return wrapWithBack(<LearningHub defaultTab={subFeatureId} onGoBack={onGoBack} />);
   }
   if (subFeatureId === 'tpo-notices' || subFeatureId === 'tpo') {
-    return <TpoDashboard />;
+    return wrapWithBack(<TpoDashboard onGoBack={onGoBack} />);
   }
   if (subFeatureId === 'language-translation') {
-    return <LanguageTranslatorPage studentProfile={studentProfile} />;
+    return wrapWithBack(<LanguageTranslatorPage studentProfile={studentProfile} onGoBack={onGoBack} />);
+  }
+  if (subFeatureId === 'support-feedback' || subFeatureId === 'support' || subFeatureId === 'rating-feedback') {
+    return wrapWithBack(<SupportFeedbackPage studentProfile={studentProfile} onNavigate={onNavigate} language={language} onGoBack={onGoBack} />);
+  }
+  if (subFeatureId === 'why-us') {
+    return wrapWithBack(<WhyUsPage onNavigate={onNavigate} language={language} onGoBack={onGoBack} />);
   }
   if (subFeatureId === 'search-results') {
-    return <GlobalSearchResultsPage searchQuery={searchQuery} studentProfile={studentProfile} onNavigate={onNavigate} />;
+    return wrapWithBack(<GlobalSearchResultsPage searchQuery={searchQuery} studentProfile={studentProfile} onNavigate={onNavigate} onGoBack={onGoBack} />);
   }
 
   // Handle Red Flag Detector scanner logic

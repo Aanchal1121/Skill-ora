@@ -187,7 +187,7 @@ export default function MockInterview({ studentProfile, voiceEnabled }) {
   // Bookmarks & History
   const [savedFaqIds, setSavedFaqIds] = useState(() => {
     try {
-      const saved = localStorage.getItem('skillora_saved_faq_ids');
+      const saved = localStorage.getItem('skillaura_saved_faq_ids');
       return saved ? JSON.parse(saved) : ['hr-1', 'tech-java-1', 'proj-1'];
     } catch (e) {
       return ['hr-1', 'tech-java-1'];
@@ -196,7 +196,7 @@ export default function MockInterview({ studentProfile, voiceEnabled }) {
 
   const [practicedFaqIds, setPracticedFaqIds] = useState(() => {
     try {
-      const p = localStorage.getItem('skillora_practiced_faq_ids');
+      const p = localStorage.getItem('skillaura_practiced_faq_ids');
       return p ? JSON.parse(p) : ['hr-1'];
     } catch (e) {
       return ['hr-1'];
@@ -205,7 +205,7 @@ export default function MockInterview({ studentProfile, voiceEnabled }) {
 
   const [interviewHistory, setInterviewHistory] = useState(() => {
     try {
-      const hist = localStorage.getItem('skillora_interview_history');
+      const hist = localStorage.getItem('skillaura_interview_history');
       return hist ? JSON.parse(hist) : [
         {
           id: 'hist-1',
@@ -469,7 +469,7 @@ export default function MockInterview({ studentProfile, voiceEnabled }) {
     setInterviewHistory(prev => {
       const updated = [histEntry, ...prev];
       try {
-        localStorage.setItem('skillora_interview_history', JSON.stringify(updated));
+        localStorage.setItem('skillaura_interview_history', JSON.stringify(updated));
       } catch (e) {}
       return updated;
     });
@@ -521,7 +521,7 @@ export default function MockInterview({ studentProfile, voiceEnabled }) {
         if (!prev.includes(selectedPracticeQuestion.id)) {
           const updated = [...prev, selectedPracticeQuestion.id];
           try {
-            localStorage.setItem('skillora_practiced_faq_ids', JSON.stringify(updated));
+            localStorage.setItem('skillaura_practiced_faq_ids', JSON.stringify(updated));
           } catch (e) {}
           return updated;
         }
@@ -535,7 +535,7 @@ export default function MockInterview({ studentProfile, voiceEnabled }) {
     setSavedFaqIds(prev => {
       const updated = prev.includes(id) ? prev.filter(item => item !== id) : [...prev, id];
       try {
-        localStorage.setItem('skillora_saved_faq_ids', JSON.stringify(updated));
+        localStorage.setItem('skillaura_saved_faq_ids', JSON.stringify(updated));
       } catch (e) {}
       return updated;
     });

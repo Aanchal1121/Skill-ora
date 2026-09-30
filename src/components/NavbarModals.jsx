@@ -29,6 +29,7 @@ import {
   Check,
   GraduationCap
 } from 'lucide-react';
+import WhyUsPage from './WhyUsPage';
 
 export default function NavbarModals({
   activeModal,
@@ -69,8 +70,8 @@ export default function NavbarModals({
   // Contact configurations
   const CONTACT_PHONE = "+91 98765 43210";
   const CONTACT_TEL_LINK = "tel:+919876543210";
-  const CONTACT_GMAIL = "support.skillora@gmail.com";
-  const CONTACT_MAILTO_LINK = "mailto:support.skillora@gmail.com";
+  const CONTACT_GMAIL = "support.skillaura@gmail.com";
+  const CONTACT_MAILTO_LINK = "mailto:support.skillaura@gmail.com";
 
   const handlePhotoUploadModal = (e) => {
     const file = e.target.files?.[0];
@@ -199,9 +200,9 @@ export default function NavbarModals({
               <Sparkles size={20} />
             </div>
             <h3 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#1E1B4B', margin: 0 }}>
-              {activeModal === 'about' && 'About Skillora'}
-              {activeModal === 'why-us' && 'Why Choose Skillora'}
-              {activeModal === 'contact' && 'Get in Touch with Skillora'}
+              {activeModal === 'about' && 'About SkillAura'}
+              {activeModal === 'why-us' && 'Why Choose SkillAura'}
+              {activeModal === 'contact' && 'Get in Touch with SkillAura'}
               {activeModal === 'profile' && 'Student Profile Settings'}
             </h3>
           </div>
@@ -238,7 +239,7 @@ export default function NavbarModals({
                 Bridging the Gap Between College Learning and Industry Success
               </h4>
               <p style={{ fontSize: '0.92rem', color: '#4B5563', lineHeight: '1.6', margin: 0 }}>
-                Skillora is an AI-powered student career guidance and employability platform designed to help college students understand their strengths, identify skill gaps, build real-world projects, practice interviews, and confidently launch their professional careers.
+                SkillAura is an AI-powered student career guidance and employability platform designed to help college students understand their strengths, identify skill gaps, build real-world projects, practice interviews, and confidently launch their professional careers.
               </p>
             </div>
 
@@ -331,110 +332,13 @@ export default function NavbarModals({
         {/* 2. WHY US MODAL CONTENT */}
         {/* ===================================================================== */}
         {activeModal === 'why-us' && (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-            {/* Headline Banner */}
-            <div style={{
-              background: 'linear-gradient(135deg, #1E1B4B 0%, #312E81 100%)',
-              color: '#FFFFFF',
-              borderRadius: '20px',
-              padding: '24px',
-              textAlign: 'center'
-            }}>
-              <span style={{ background: 'rgba(255,255,255,0.15)', color: '#C084FC', padding: '4px 12px', borderRadius: '12px', fontSize: '0.78rem', fontWeight: '700' }}>
-                WHY CHOOSE SKILLORA
-              </span>
-              <h2 style={{ fontSize: '1.6rem', fontWeight: '800', margin: '10px 0 6px 0' }}>
-                "Your Career Journey, All in One Place."
-              </h2>
-              <p style={{ color: '#E0E7FF', fontSize: '0.9rem', margin: 0 }}>
-                A unified ecosystem supporting students from baseline skill assessment to job landing.
-              </p>
-            </div>
-
-            {/* Key Benefits Grid (8 Benefits) */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '14px' }}>
-              {[
-                { title: 'Personalized Career Guidance', desc: 'Explore role-specific roadmaps tailored to your degree and career goals.', icon: Compass },
-                { title: 'AI-Based Skill Gap Analysis', desc: 'Identify missing skills with weighted scoring and curated learning paths.', icon: BarChart2 },
-                { title: 'Practical Project Learning', desc: 'Plan and build real-world portfolio projects step-by-step.', icon: Sliders },
-                { title: 'AI Mock Interviews', desc: 'Practise HR, technical, and project questions with voice and camera coaching.', icon: Award },
-                { title: 'Resume Assist', desc: 'Analyze and polish your resume with ATS compatibility checks.', icon: FileText },
-                { title: 'Opportunity Discovery', desc: 'Discover relevant jobs, internships, and verified government schemes.', icon: Briefcase },
-                { title: 'Growth Tracking', desc: 'Monitor readiness scores and track skill progress over time.', icon: TrendingUp },
-                { title: 'Multilingual Support', desc: 'Access career content and interview practice in 16+ languages.', icon: Globe }
-              ].map((b, idx) => {
-                const BIcon = b.icon;
-                return (
-                  <div key={idx} style={{ background: '#FFFFFF', padding: '16px', borderRadius: '16px', border: '1px solid #F3E8FF', boxShadow: '0 4px 16px rgba(147, 51, 234, 0.04)' }}>
-                    <BIcon size={20} color="#9333EA" style={{ marginBottom: '8px' }} />
-                    <div style={{ fontSize: '0.9rem', fontWeight: '700', color: '#1E1B4B', marginBottom: '4px' }}>{b.title}</div>
-                    <div style={{ fontSize: '0.8rem', color: '#6B7280', lineHeight: '1.4' }}>{b.desc}</div>
-                  </div>
-                );
-              })}
-            </div>
-
-            {/* Visual Career Journey Step Flow */}
-            <div style={{ background: '#FAF7FF', padding: '20px', borderRadius: '20px', border: '1px solid #E9D5FF' }}>
-              <h4 style={{ fontSize: '1rem', fontWeight: '800', color: '#1E1B4B', margin: '0 0 14px 0', textAlign: 'center' }}>
-                🗺️ The Skillora 7-Step Career Journey
-              </h4>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', justifyContent: 'center', alignItems: 'center' }}>
-                {[
-                  '1. Discover Yourself',
-                  '2. Explore Careers',
-                  '3. Identify Skill Gaps',
-                  '4. Learn & Build',
-                  '5. Improve Resume',
-                  '6. Practise Interviews',
-                  '7. Explore Opportunities'
-                ].map((step, i) => (
-                  <React.Fragment key={i}>
-                    <span style={{
-                      background: '#FFFFFF',
-                      color: '#9333EA',
-                      border: '1.5px solid #E9D5FF',
-                      padding: '8px 14px',
-                      borderRadius: '20px',
-                      fontSize: '0.82rem',
-                      fontWeight: '700',
-                      boxShadow: '0 2px 6px rgba(147, 51, 234, 0.05)'
-                    }}>
-                      {step}
-                    </span>
-                    {i < 6 && <ChevronRight size={16} color="#9333EA" />}
-                  </React.Fragment>
-                ))}
-              </div>
-            </div>
-
-            {/* Action CTA Button */}
-            <div style={{ textAlign: 'center', marginTop: '10px' }}>
-              <button
-                onClick={() => {
-                  onClose();
-                  if (onOpenAuthModal) onOpenAuthModal();
-                }}
-                style={{
-                  background: 'linear-gradient(135deg, #9333EA 0%, #7E22CE 100%)',
-                  color: '#FFFFFF',
-                  border: 'none',
-                  borderRadius: '16px',
-                  padding: '14px 32px',
-                  fontWeight: '800',
-                  fontSize: '1rem',
-                  cursor: 'pointer',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '8px',
-                  boxShadow: '0 6px 20px rgba(147, 51, 234, 0.25)'
-                }}
-              >
-                <span>Start My Journey</span>
-                <ArrowRight size={18} />
-              </button>
-            </div>
-          </div>
+          <WhyUsPage
+            onStartJourney={() => {
+              onClose();
+              if (onOpenAuthModal) onOpenAuthModal();
+            }}
+            language={language}
+          />
         )}
 
         {/* ===================================================================== */}

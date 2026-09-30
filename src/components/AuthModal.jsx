@@ -88,7 +88,7 @@ export default function AuthModal({ isOpen, onClose, onRegisterSuccess }) {
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <Sparkles size={22} color="#9333EA" />
-            <h2 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#2D1B4E' }}>Skillora</h2>
+            <h2 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#2D1B4E' }}>SkillAura</h2>
           </div>
           <button onClick={onClose} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#7A6F8A' }}>
             <X size={20} />

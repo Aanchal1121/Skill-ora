@@ -23,7 +23,8 @@ import {
   Bell,
   Star, 
   Layers,
-  Share2
+  Share2,
+  Gamepad2
 } from 'lucide-react';
 import { t, isRTL } from '../utils/i18n';
 
@@ -95,7 +96,9 @@ export default function LeftSidebar({
       subFeatures: [
         { id: 'project-ideas', label: t('project-ideas', language), icon: Layers },
         { id: 'communication-skills', label: t('communication-skills', language), icon: MessageSquare },
-        { id: 'mock-interviews', label: t('mock-interviews', language), icon: Mic }
+        { id: 'mock-interviews', label: t('mock-interviews', language), icon: Mic },
+        { id: 'mind-games', label: t('mind-games', language) || 'Mind Games & Puzzles', icon: Gamepad2 },
+        { id: 'support-feedback', label: 'Support & Feedback', icon: HelpCircle }
       ]
     }
   ];
@@ -111,7 +114,7 @@ export default function LeftSidebar({
         justifyContent: 'space-between'
       }}>
         <h3 style={{ fontSize: '1rem', fontWeight: 800, color: '#2D1B4E', letterSpacing: '0.02em' }}>
-          Skillora Features
+          SkillAura Features
         </h3>
         <span className="badge-pill" style={{ fontSize: '0.72rem', padding: '2px 8px' }}>
           {language}

@@ -91,7 +91,7 @@ const initialDbData = {
         techStack: ["React", "Node.js", "Express", "OpenAI API"],
         status: "Completed",
         githubUrl: "https://github.com/ananya-roy/resume-analyzer-ai",
-        liveUrl: "https://resume-gap.skillora.app"
+        liveUrl: "https://resume-gap.skillaura.app"
       },
       {
         id: "p3",
@@ -362,6 +362,109 @@ const initialDbData = {
       { dept: "Computer Science", dsa: "High (78%)", webDev: "High (82%)", devOps: "Low (34%)", softSkills: "Medium (65%)" },
       { dept: "Information Tech", dsa: "Medium (66%)", webDev: "High (79%)", devOps: "Low (28%)", softSkills: "Medium (68%)" },
       { dept: "Electronics & Comm", dsa: "Low (42%)", webDev: "Medium (51%)", devOps: "Low (18%)", softSkills: "Medium (60%)" }
+    ]
+  },
+  opportunities: [
+    {
+      id: "OPP-101",
+      type: "internship",
+      title: "Junior Java Developer Intern",
+      company: "TCS (Tata Consultancy Services)",
+      logoBg: "#9333EA",
+      location: "Bangalore / Hybrid",
+      workMode: "Hybrid",
+      stipend: "₹25,000 / month",
+      duration: "6 Months",
+      deadline: "Oct 15, 2026",
+      source: "Official TCS Careers",
+      sourceUrl: "https://tcs.com/careers",
+      requiredSkills: ["Core Java", "SQL", "REST APIs", "Git"],
+      matchingSkills: ["Core Java", "SQL", "Git"],
+      missingSkills: ["REST APIs"],
+      experience: "0-1 Year (2025/2026 Batch B.Tech CSE/IT)",
+      description: "Join the Enterprise Software team to develop RESTful microservices using Core Java, Spring Boot, and PostgreSQL databases.",
+      responsibilities: ["Write clean Core Java code", "Optimize SQL queries", "Agile sprint collaboration"],
+      isSaved: true,
+      status: "Applied"
+    },
+    {
+      id: "OPP-102",
+      type: "job",
+      title: "Full Stack Java Graduate Trainee",
+      company: "CyberTech Global",
+      logoBg: "#059669",
+      location: "Pune / On-site",
+      workMode: "On-site",
+      stipend: "₹6.5 - ₹8.0 LPA",
+      duration: "Permanent Role",
+      deadline: "Nov 01, 2026",
+      source: "Naukri.com",
+      sourceUrl: "https://naukri.com",
+      requiredSkills: ["Java", "SQL", "React", "HTML/CSS"],
+      matchingSkills: ["Java", "SQL", "HTML/CSS"],
+      missingSkills: ["React"],
+      experience: "0-1 Years Experience",
+      description: "Full-time graduate engineer trainee position focusing on end-to-end Java backend microservices.",
+      responsibilities: ["Develop responsive web frontend and Java REST APIs", "Participate in CI/CD deployment"],
+      isSaved: false,
+      status: "Saved"
+    }
+  ],
+  supportTickets: [
+    {
+      id: "TKT-84920",
+      category: "Skill Gap Analysis",
+      subject: "Spring Boot skill gap target level calculation",
+      priority: "Medium",
+      description: "Need clarification on how the Spring Boot assessment proficiency level is calculated against Senior Java Backend developer target.",
+      status: "In Progress",
+      createdAt: "2026-09-28",
+      responses: [
+        {
+          sender: "SkillAura TPO Support",
+          message: "Hello Ananya, our career team has reviewed your assessment dataset. The target benchmark is set based on Tier-1 Java job profiles.",
+          timestamp: "2026-09-29 10:30 AM"
+        }
+      ]
+    }
+  ],
+  feedbackList: [
+    {
+      id: "FB-101",
+      category: "Feature Improvement",
+      rating: 5,
+      text: "Skill Gap Analysis and AI Mock Interview features are immensely helpful for campus placement preparation!",
+      isAnonymous: false,
+      studentName: "Ananya Roy",
+      createdAt: "2026-09-25"
+    }
+  ],
+  ratingsList: [
+    {
+      studentId: "STU-7821",
+      studentName: "Ananya Roy",
+      rating: 5,
+      review: "Excellent career platform with outstanding AI mock interview practice.",
+      timestamp: "2026-09-26"
+    }
+  ],
+  mindGamesStats: {
+    totalGamesPlayed: 14,
+    challengesCompleted: 28,
+    dailyStreak: 5,
+    lastChallengeDate: "2026-09-30",
+    totalXP: 840,
+    accuracy: 88,
+    avgTimeSeconds: 42,
+    personalBest: 1250,
+    badges: [
+      { id: "b1", title: "Brain Starter", icon: "🥉", desc: "Completed your first mind game!", unlocked: true },
+      { id: "b2", title: "Logic Master", icon: "🧠", desc: "Scored 80%+ on 5 Logical Reasoning games.", unlocked: true },
+      { id: "b3", title: "Memory Champion", icon: "🃏", desc: "Matched all pairs in under 45s.", unlocked: true },
+      { id: "b4", title: "Puzzle Solver", icon: "🧩", desc: "Solved 10 puzzles total.", unlocked: true },
+      { id: "b5", title: "Critical Thinker", icon: "💡", desc: "Solved River Crossing or Tower of Hanoi.", unlocked: true },
+      { id: "b6", title: "7-Day Streak", icon: "🔥", desc: "Maintain a 7-day daily streak.", unlocked: false, progress: "5/7 Days" },
+      { id: "b7", title: "Brain Challenge Expert", icon: "🎓", desc: "Reach 1000 total XP.", unlocked: false, progress: "840/1000 XP" }
     ]
   }
 };

@@ -16,11 +16,15 @@ import {
   Send
 } from 'lucide-react';
 
+import BackButton from './BackButton';
+
 export default function HeroLanding({ 
   onSelectSubFeature, 
   studentProfile,
   onNavigateProgress,
-  searchQuery
+  searchQuery,
+  onGoBack,
+  canGoBack
 }) {
 
   // Exact 6 Main Feature Cards specified for Home Page
@@ -106,6 +110,9 @@ export default function HeroLanding({
 
   return (
     <div style={{ padding: '24px 20px', maxWidth: '1200px', margin: '0 auto' }} className="fade-in">
+      {canGoBack && onGoBack && (
+        <BackButton onGoBack={onGoBack} label="Back to Previous Page" />
+      )}
       
       {/* HERO SECTION MATCHING PROMPT INSTRUCTIONS */}
       <section style={{
@@ -146,7 +153,7 @@ export default function HeroLanding({
               marginBottom: '26px',
               lineHeight: '1.65'
             }}>
-              Skillora helps students understand their strengths, identify skill gaps, explore career opportunities, and prepare for their professional future through personalized guidance and career-readiness insights.
+              SkillAura helps students understand their strengths, identify skill gaps, explore career opportunities, and prepare for their professional future through personalized guidance and career-readiness insights.
             </p>
 
             <div style={{ display: 'flex', gap: '14px', flexWrap: 'wrap', marginBottom: '28px' }}>
@@ -295,7 +302,7 @@ export default function HeroLanding({
         </div>
       </section>
 
-      {/* HOW SKILLORA WORKS: STEP BY STEP JOURNEY */}
+      {/* HOW SKILLAURA WORKS: STEP BY STEP JOURNEY */}
       <section style={{
         background: '#FFFFFF',
         borderRadius: '24px',
@@ -305,7 +312,7 @@ export default function HeroLanding({
       }}>
         <div style={{ textAlign: 'center', marginBottom: '30px' }}>
           <h2 style={{ fontSize: '1.9rem', fontWeight: 800, color: '#2D1B4E', marginBottom: '6px' }}>
-            How Skillora Works, <span className="text-gradient">Step by Step</span>
+            How SkillAura Works, <span className="text-gradient">Step by Step</span>
           </h2>
           <p style={{ color: '#7A6F8A', fontSize: '0.95rem' }}>
             A transparent 6-stage journey designed for student career success.

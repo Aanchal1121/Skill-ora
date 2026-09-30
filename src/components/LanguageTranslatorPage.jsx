@@ -142,7 +142,7 @@ export default function LanguageTranslatorPage({ studentProfile, isModal = false
   // Translation History & Saved
   const [translationHistory, setTranslationHistory] = useState(() => {
     try {
-      const hist = localStorage.getItem('skillora_translation_history');
+      const hist = localStorage.getItem('skillaura_translation_history');
       return hist ? JSON.parse(hist) : [
         {
           id: 'h-1',
@@ -246,7 +246,7 @@ export default function LanguageTranslatorPage({ studentProfile, isModal = false
       setTranslationHistory(prev => {
         const updated = [newEntry, ...prev];
         try {
-          localStorage.setItem('skillora_translation_history', JSON.stringify(updated));
+          localStorage.setItem('skillaura_translation_history', JSON.stringify(updated));
         } catch (e) {}
         return updated;
       });
@@ -394,7 +394,7 @@ export default function LanguageTranslatorPage({ studentProfile, isModal = false
                 alignItems: 'center',
                 gap: '6px'
               }}>
-                <Sparkles size={14} /> SKILLORA AI MULTILINGUAL ASSISTANT
+                <Sparkles size={14} /> SKILLAURA AI MULTILINGUAL ASSISTANT
               </span>
               <span style={{ fontSize: '0.82rem', color: '#6B7280', fontWeight: '500' }}>
                 16+ Regional & Global Languages
@@ -847,7 +847,7 @@ export default function LanguageTranslatorPage({ studentProfile, isModal = false
             boxShadow: '0 4px 20px rgba(147, 51, 234, 0.05)'
           }}>
             <h3 style={{ fontSize: '1.2rem', fontWeight: '800', color: '#1E1B4B', marginBottom: '16px' }}>
-              Quick Preset Loaders for Skillora Content:
+              Quick Preset Loaders for SkillAura Content:
             </h3>
 
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '14px' }}>

@@ -31,7 +31,7 @@ export default function Navbar({
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [recentSearches, setRecentSearches] = useState(() => {
     try {
-      const saved = localStorage.getItem('skillora_recent_searches');
+      const saved = localStorage.getItem('skillaura_recent_searches');
       return saved ? JSON.parse(saved) : ['Java Developer', 'Mock Interview', 'Spring Boot'];
     } catch (e) {
       return ['Java Developer', 'Mock Interview'];
@@ -44,7 +44,7 @@ export default function Navbar({
       const filtered = prev.filter(q => q.toLowerCase() !== query.toLowerCase());
       const updated = [query.trim(), ...filtered].slice(0, 5);
       try {
-        localStorage.setItem('skillora_recent_searches', JSON.stringify(updated));
+        localStorage.setItem('skillaura_recent_searches', JSON.stringify(updated));
       } catch (e) {}
       return updated;
     });
@@ -131,7 +131,7 @@ export default function Navbar({
                 color: '#2D1B4E',
                 letterSpacing: '-0.5px'
               }}>
-                Skill<span style={{ color: '#9333EA' }}>ora</span>
+                Skill<span style={{ color: '#9333EA' }}>Aura</span>
               </span>
             </div>
           </div>
@@ -370,7 +370,7 @@ export default function Navbar({
                     onClick={() => {
                       setLanguage(lang.code);
                       try {
-                        localStorage.setItem('skillora_user_language', lang.code);
+                        localStorage.setItem('skillaura_user_language', lang.code);
                       } catch (e) {}
                       setIsLangDropdownOpen(false);
                     }}

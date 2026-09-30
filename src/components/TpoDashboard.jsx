@@ -143,7 +143,7 @@ export default function TpoDashboard() {
     const encodedUri = encodeURI(csvContent);
     const link = document.createElement("a");
     link.setAttribute("href", encodedUri);
-    link.setAttribute("download", `Skillora_Placement_Report_${selectedBatch}.csv`);
+    link.setAttribute("download", `SkillAura_Placement_Report_${selectedBatch}.csv`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -239,7 +239,8 @@ export default function TpoDashboard() {
               { id: 'students', label: '👨‍🎓 Student Directory' },
               { id: 'drives', label: '🏢 Campus Placement Drives' },
               { id: 'analytics', label: '📊 Batch Skill Heatmap' },
-              { id: 'support', label: '⚠️ Support & Early Warning' }
+              { id: 'support', label: '⚠️ Support & Early Warning' },
+              { id: 'tickets', label: '🎧 Support Tickets & Feedback' }
             ].map(tab => (
               <button
                 key={tab.id}
@@ -397,6 +398,61 @@ export default function TpoDashboard() {
                   <button onClick={() => alert(`Assigned mentor guidance session to ${st.name}`)} className="btn-secondary" style={{ background: '#FFFFFF', fontSize: '0.8rem' }}>
                     Assign Mentor Guidance Action
                   </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Tab Content: Student Support Tickets & Feedback */}
+        {activeTab === 'tickets' && (
+          <div className="fade-in">
+            <h4 style={{ fontSize: '1.1rem', fontWeight: 800, color: '#2D1B4E', marginBottom: '14px' }}>
+              Student Support Tickets & Feedback Inbox
+            </h4>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+              {[
+                {
+                  id: 'TKT-84920',
+                  student: 'Ananya Roy (CSE - STU7821)',
+                  category: 'Skill Gap Analysis',
+                  subject: 'Spring Boot skill gap target level calculation',
+                  priority: 'Medium',
+                  status: 'In Progress',
+                  date: '2026-09-28',
+                  desc: 'Need clarification on how the Spring Boot assessment proficiency level is calculated against Senior Java Backend developer target.'
+                },
+                {
+                  id: 'TKT-71024',
+                  student: 'Rohan Verma (CSE - STU102)',
+                  category: 'Resume Assist',
+                  subject: 'ATS formatting recommendation for PDF export',
+                  priority: 'Low',
+                  status: 'Resolved',
+                  date: '2026-09-20',
+                  desc: 'Can I export the ATS optimized resume directly into DOCX format?'
+                }
+              ].map((tkt, idx) => (
+                <div key={idx} style={{ background: '#FFFFFF', border: '1px solid #EAE2F8', padding: '18px', borderRadius: '16px', boxShadow: '0 4px 14px rgba(147, 51, 234, 0.04)' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px', flexWrap: 'wrap', gap: '8px' }}>
+                    <div>
+                      <span style={{ fontSize: '0.78rem', fontWeight: 800, color: '#9333EA', background: '#F0EAFA', padding: '2px 8px', borderRadius: '6px', marginRight: '8px' }}>
+                        {tkt.id}
+                      </span>
+                      <strong style={{ color: '#2D1B4E' }}>{tkt.student}</strong>
+                    </div>
+                    <span style={{ fontSize: '0.78rem', background: '#DCFCE7', color: '#15803D', padding: '2px 8px', borderRadius: '6px', fontWeight: 700 }}>
+                      Status: {tkt.status}
+                    </span>
+                  </div>
+                  <h5 style={{ fontSize: '1.0rem', fontWeight: 800, color: '#2D1B4E', margin: '4px 0 4px 0' }}>{tkt.subject}</h5>
+                  <p style={{ fontSize: '0.85rem', color: '#4A3E56', margin: '0 0 10px 0' }}>{tkt.desc}</p>
+                  <div style={{ display: 'flex', gap: '8px' }}>
+                    <button onClick={() => alert(`Replied to ticket ${tkt.id}`)} className="btn-primary" style={{ padding: '6px 14px', fontSize: '0.78rem' }}>
+                      <span>Respond & Resolve</span>
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>

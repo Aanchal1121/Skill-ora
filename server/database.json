@@ -7,16 +7,11 @@
     "tier": "Tier 2 College",
     "branch": "Computer Science & Engineering",
     "year": "3rd Year (Semester 6)",
-    "cgpa": 7.8,
-    "backlogHistory": 0,
+    "cgpa": "7.8",
+    "backlogHistory": "0 Backlogs",
     "targetRole": "Java Backend Developer",
     "targetCompanyType": "Tier-1 Tech / Product Startup",
-    "skills": [
-      "Java",
-      "C++",
-      "SQL",
-      "HTML"
-    ],
+    "skills": "Java, C++, SQL, HTML, Git Basics",
     "targetSkills": [
       "Node.js",
       "Express",
@@ -25,7 +20,7 @@
       "TypeScript",
       "Redis"
     ],
-    "employabilityScore": 755,
+    "employabilityScore": null,
     "maxScore": 900,
     "scoreBreakdown": {
       "academics": 195,
@@ -112,7 +107,19 @@
     "submittedApplications": 8,
     "weeklyProgress": "65%",
     "phone": "+91 98765 43210",
-    "avatarUrl": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&auto=format&fit=crop&q=80"
+    "avatarUrl": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&auto=format&fit=crop&q=80",
+    "age": "21",
+    "gender": "Female",
+    "city": "Bangalore",
+    "state": "Karnataka",
+    "degree": "B.Tech",
+    "semester": "Semester 6",
+    "sgpa": "8.1",
+    "careerGoal": "Become a Backend Software Engineer at a top Tech Product company.",
+    "preferredIndustry": "IT & Software",
+    "confidenceTech": "4",
+    "confidenceComm": "4",
+    "readiness": "On Track"
   },
   "govtSchemes": [
     {

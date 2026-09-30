@@ -25,6 +25,17 @@ import {
 // GLOBAL INDEXED SEARCH DATABASE
 // =============================================================================
 export const GLOBAL_SEARCH_DATABASE = [
+  // --- MIND GAMES & PUZZLES ---
+  {
+    id: 'mg-1',
+    category: 'Learning & Skill Development',
+    subFeatureId: 'mind-games',
+    title: 'Mind Games & Puzzles Dashboard',
+    subtitle: 'Cognitive Growth & Aptitude Prep',
+    description: 'Interactive logical reasoning, memory match, Sudoku, river crossing, and speed arithmetic puzzles for placement aptitude.',
+    tags: ['Mind Games', 'Puzzles', 'Sudoku', 'Logical Reasoning', 'Memory', 'Aptitude', 'Brain'],
+    badge: 'New Feature'
+  },
   // --- JOBS & INTERNSHIPS ---
   {
     id: 'job-1',
@@ -125,7 +136,7 @@ export const GLOBAL_SEARCH_DATABASE = [
     category: 'Skills & Courses',
     subFeatureId: 'free-courses',
     title: 'Java & Spring Boot Microservices Masterclass',
-    subtitle: 'Skillora Learning Hub Course',
+    subtitle: 'SkillAura Learning Hub Course',
     description: 'Free interactive modules on Java OOP pillars, Multithreading, HashMap internals, and Spring Security.',
     tags: ['Java', 'Spring Boot', 'Course', 'Free', 'Backend'],
     badge: 'Free Course'
@@ -135,7 +146,7 @@ export const GLOBAL_SEARCH_DATABASE = [
     category: 'Skills & Courses',
     subFeatureId: 'free-courses',
     title: 'React.js & Frontend Architecture',
-    subtitle: 'Skillora Learning Hub Course',
+    subtitle: 'SkillAura Learning Hub Course',
     description: 'Learn State Management, Custom Hooks, Virtual DOM, and Responsive Web Layouts.',
     tags: ['React', 'JavaScript', 'Frontend', 'Course'],
     badge: 'Free Course'
@@ -145,7 +156,7 @@ export const GLOBAL_SEARCH_DATABASE = [
     category: 'Skills & Courses',
     subFeatureId: 'free-courses',
     title: 'SQL Database Administration & Query Optimization',
-    subtitle: 'Skillora Learning Hub Course',
+    subtitle: 'SkillAura Learning Hub Course',
     description: 'Master Complex Joins, Subqueries, Indexing strategies, and Normalized Schemas.',
     tags: ['SQL', 'Database', 'PostgreSQL', 'Course'],
     badge: 'Free Course'
@@ -273,12 +284,12 @@ export default function GlobalSearchResultsPage({ searchQuery = '', studentProfi
               alignItems: 'center',
               gap: '6px'
             }}>
-              <Sparkles size={14} /> SKILLORA SMART GLOBAL SEARCH
+              <Sparkles size={14} /> SKILLAURA SMART GLOBAL SEARCH
             </span>
           </div>
 
           <h1 style={{ fontSize: '1.8rem', fontWeight: '800', color: '#1E1B4B', margin: '0 0 12px 0' }}>
-            {currentQuery ? `Search Results for "${localQuery}"` : 'Explore All Skillora Opportunities & Resources'}
+            {currentQuery ? `Search Results for "${localQuery}"` : 'Explore All SkillAura Opportunities & Resources'}
           </h1>
 
           {/* Search Input Bar */}

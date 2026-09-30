@@ -46,6 +46,14 @@ import { t } from '../utils/i18n';
 
 const DEFAULT_AVATAR = 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&auto=format&fit=crop&q=80';
 
+const ensureArray = (val) => {
+  if (Array.isArray(val)) return val;
+  if (val && typeof val === 'object') {
+    return Object.values(val).flatMap(item => Array.isArray(item) ? item : [item]);
+  }
+  return [];
+};
+
 export default function StudentProfileDashboard({ 
   studentProfile, 
   onNavigate, 
@@ -57,7 +65,7 @@ export default function StudentProfileDashboard({
   // ---------------------------------------------------------------------------
   const [profile, setProfile] = useState(() => {
     try {
-      const saved = localStorage.getItem('skillora_student_profile');
+      const saved = localStorage.getItem('skillaura_student_profile');
       if (saved) {
         const parsed = JSON.parse(saved);
         return { ...parsed, ...studentProfile };
@@ -147,7 +155,7 @@ export default function StudentProfileDashboard({
           techStack: ["React", "Node.js", "Express", "OpenAI API"],
           status: "Completed",
           githubUrl: "https://github.com/ananya-roy/resume-analyzer-ai",
-          liveUrl: "https://resume-gap.skillora.app"
+          liveUrl: "https://resume-gap.skillaura.app"
         },
         {
           id: "p3",
@@ -239,7 +247,7 @@ export default function StudentProfileDashboard({
     };
   });
 
-  // Sync with incoming parent updates
+  // Sync with incoming parent updates & fetch backend profile on mount
   useEffect(() => {
     if (studentProfile) {
       setProfile(prev => ({
@@ -247,6 +255,19 @@ export default function StudentProfileDashboard({
         ...studentProfile
       }));
     }
+
+    // Try fetching live profile from backend API
+    fetch('http://localhost:5000/api/student/profile')
+      .then(res => res.ok ? res.json() : null)
+      .then(dbData => {
+        if (dbData && dbData.name) {
+          setProfile(prev => ({
+            ...prev,
+            ...dbData
+          }));
+        }
+      })
+      .catch(() => {});
   }, [studentProfile]);
 
   // State for active edit modal, selected tab in modal, & messages
@@ -288,10 +309,13 @@ export default function StudentProfileDashboard({
       if (pData[f.key]) filledCount++;
     });
 
-    if (pData.skills && pData.skills.length > 0) filledCount += 2;
+    const skillsArr = ensureArray(pData.skills);
+    if (skillsArr.length > 0) filledCount += 2;
     if (pData.careerGoals && pData.careerGoals.targetRole) filledCount += 2;
-    if (pData.projects && pData.projects.length > 0) filledCount += 2;
-    if (pData.certifications && pData.certifications.length > 0) filledCount += 2;
+    const projArr = ensureArray(pData.projects);
+    if (projArr.length > 0) filledCount += 2;
+    const certArr = ensureArray(pData.certifications);
+    if (certArr.length > 0) filledCount += 2;
 
     const maxTotal = requiredFields.length + 8; // 18 total score points
     const percentage = Math.min(100, Math.round((filledCount / maxTotal) * 100));
@@ -373,7 +397,7 @@ export default function StudentProfileDashboard({
     setProfile(updated);
 
     try {
-      localStorage.setItem('skillora_student_profile', JSON.stringify(updated));
+      localStorage.setItem('skillaura_student_profile', JSON.stringify(updated));
     } catch (err) {}
 
     if (onUpdateProfile) {
@@ -423,7 +447,7 @@ export default function StudentProfileDashboard({
   };
 
   const handleDeleteExperience = (expId) => {
-    setEditForm(prev => ({ ...prev, experiences: (prev.experiences || []).filter(e => e.id !== expId) }));
+    setEditForm(prev => ({ ...prev, experiences: ensureArray(prev.experiences).filter(e => e.id !== expId) }));
   };
 
   const handleAddCertification = () => {
@@ -434,11 +458,11 @@ export default function StudentProfileDashboard({
       issueDate: "2025-01",
       credentialUrl: ""
     };
-    setEditForm(prev => ({ ...prev, certifications: [...(prev.certifications || []), newCert] }));
+    setEditForm(prev => ({ ...prev, certifications: [...ensureArray(prev.certifications), newCert] }));
   };
 
   const handleDeleteCertification = (certId) => {
-    setEditForm(prev => ({ ...prev, certifications: (prev.certifications || []).filter(c => c.id !== certId) }));
+    setEditForm(prev => ({ ...prev, certifications: ensureArray(prev.certifications).filter(c => c.id !== certId) }));
   };
 
   const handleAddAchievement = () => {
@@ -450,11 +474,11 @@ export default function StudentProfileDashboard({
       credentialUrl: "",
       description: "Brief details."
     };
-    setEditForm(prev => ({ ...prev, achievements: [...(prev.achievements || []), newAch] }));
+    setEditForm(prev => ({ ...prev, achievements: [...ensureArray(prev.achievements), newAch] }));
   };
 
   const handleDeleteAchievement = (achId) => {
-    setEditForm(prev => ({ ...prev, achievements: (prev.achievements || []).filter(a => a.id !== achId) }));
+    setEditForm(prev => ({ ...prev, achievements: ensureArray(prev.achievements).filter(a => a.id !== achId) }));
   };
 
   // Group skills into 6 categories
@@ -468,17 +492,17 @@ export default function StudentProfileDashboard({
   ];
 
   const getSkillsByCategory = (catName) => {
-    return (profile.skills || []).filter(s => (s.category || '').toLowerCase() === catName.toLowerCase());
+    return ensureArray(profile.skills).filter(s => (s && (s.category || s.domain || '')).toLowerCase() === catName.toLowerCase());
   };
 
   // Top 5 Assessed Skills for Horizontal Bar Chart
-  const topAssessedSkills = (profile.skills || [])
-    .slice(0, 5);
+  const topAssessedSkills = ensureArray(profile.skills).slice(0, 5);
 
   // Projects Summary
-  const totalProjects = (profile.projects || []).length;
-  const completedProjects = (profile.projects || []).filter(p => p.status === 'Completed').length;
-  const totalExperiences = (profile.experiences || []).length;
+  const projectsList = ensureArray(profile.projects);
+  const totalProjects = projectsList.length;
+  const completedProjects = projectsList.filter(p => p.status === 'Completed').length;
+  const totalExperiences = ensureArray(profile.experiences).length;
 
   return (
     <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '24px 20px' }} className="fade-in">
@@ -1064,7 +1088,7 @@ export default function StudentProfileDashboard({
         {/* Projects Cards List */}
         <h4 style={{ fontSize: '1rem', fontWeight: 800, color: '#2D1B4E', marginBottom: '12px' }}>Projects</h4>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '16px', marginBottom: '24px' }}>
-          {(profile.projects || []).map((proj, idx) => (
+          {ensureArray(profile.projects).map((proj, idx) => (
             <div key={idx} style={{ background: '#FAF7FF', padding: '20px', borderRadius: '18px', border: '1px solid #EAE2F8', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
               <div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
@@ -1101,7 +1125,7 @@ export default function StudentProfileDashboard({
               </div>
 
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
-                {(proj.techStack || []).map((tech, tIdx) => (
+                {ensureArray(proj.techStack).map((tech, tIdx) => (
                   <span key={tIdx} style={{ background: '#F0EAFA', color: '#9333EA', padding: '3px 8px', borderRadius: '8px', fontSize: '0.75rem', fontWeight: 700 }}>
                     {tech}
                   </span>
@@ -1112,11 +1136,11 @@ export default function StudentProfileDashboard({
         </div>
 
         {/* Experience & Internship Section */}
-        {(profile.experiences || []).length > 0 && (
+        {ensureArray(profile.experiences).length > 0 && (
           <div>
             <h4 style={{ fontSize: '1rem', fontWeight: 800, color: '#2D1B4E', marginBottom: '12px' }}>Work & Internship Experience</h4>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              {(profile.experiences || []).map((exp, idx) => (
+              {ensureArray(profile.experiences).map((exp, idx) => (
                 <div key={idx} style={{ background: '#FAF7FF', padding: '18px', borderRadius: '16px', border: '1px solid #EAE2F8' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '8px' }}>
                     <h5 style={{ fontSize: '0.98rem', fontWeight: 800, color: '#2D1B4E', margin: 0 }}>
@@ -1218,7 +1242,7 @@ export default function StudentProfileDashboard({
       </div>
 
       {/* ====================================================================
-          SECTION 7: CAREER READINESS OVERVIEW (LINKING TO SKILLORA MODULES)
+          SECTION 7: CAREER READINESS OVERVIEW (LINKING TO SKILLAURA MODULES)
          ==================================================================== */}
       <div style={{
         background: '#FFFFFF',
@@ -1234,7 +1258,7 @@ export default function StudentProfileDashboard({
           </div>
           <div>
             <h3 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#2D1B4E', margin: 0 }}>Career Readiness Overview</h3>
-            <p style={{ color: '#7A6F8A', fontSize: '0.85rem', margin: 0 }}>Current readiness scores linked directly to connected Skillora modules.</p>
+            <p style={{ color: '#7A6F8A', fontSize: '0.85rem', margin: 0 }}>Current readiness scores linked directly to connected SkillAura modules.</p>
           </div>
         </div>
 

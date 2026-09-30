@@ -521,7 +521,7 @@ export default function EmployabilityScorePage({ studentProfile, onNavigate }) {
                 Personalized Action Plan
               </h3>
               <p style={{ fontSize: '0.85rem', color: '#7A6F8A', marginBottom: '14px' }}>
-                Take targeted actions in Skillora modules to boost your score efficiently.
+                Take targeted actions in SkillAura modules to boost your score efficiently.
               </p>
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>

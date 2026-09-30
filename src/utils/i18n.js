@@ -1,4 +1,4 @@
-// Centralized Multilingual Internationalization (i18n) Dictionary for Skillora
+// Centralized Multilingual Internationalization (i18n) Dictionary for SkillAura
 
 export const SUPPORTED_LANGUAGES = [
   { code: 'English', nativeName: 'English', rtl: false },
@@ -48,6 +48,7 @@ export const I18N_DICTIONARY = {
     'project-ideas': 'Project Lab',
     'communication-skills': '30-Sec Elevator Pitch',
     'mock-interviews': 'AI Mock Interview',
+    'mind-games': 'Mind Games & Puzzles',
     'jobs-opportunities': 'Internship & Job Opportunities',
     'govt-opportunities-schemes': 'Government Opportunities & Schemes',
     'job-alerts': 'Job & Internship Alerts',

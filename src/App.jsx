@@ -13,9 +13,15 @@ import FloatingChatbotWidget from './components/FloatingChatbotWidget';
 export default function App() {
   const [activeTab, setActiveTab] = useState('home'); // 'home', 'feature', 'career-chat'
   const [activeSubFeature, setActiveSubFeature] = useState('profile-analysis');
+  
+  // Shared Navigation History Stack
+  const [navHistory, setNavHistory] = useState([
+    { tab: 'home', subFeature: 'home' }
+  ]);
+
   const [language, setLanguage] = useState(() => {
     try {
-      return localStorage.getItem('skillora_user_language') || 'English';
+      return localStorage.getItem('skillaura_user_language') || 'English';
     } catch (e) {
       return 'English';
     }
@@ -27,10 +33,50 @@ export default function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
 
+  // Core History Navigation Helper
+  const navigateTo = (tab, subId) => {
+    setNavHistory(prev => {
+      const current = prev[prev.length - 1];
+      if (current && current.tab === tab && current.subFeature === subId) {
+        return prev;
+      }
+      return [...prev, { tab, subFeature: subId }];
+    });
+    setActiveTab(tab);
+    if (subId && subId !== 'home') {
+      setActiveSubFeature(subId);
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleGoBack = () => {
+    if (navHistory.length > 1) {
+      setNavHistory(prev => {
+        const nextStack = [...prev];
+        nextStack.pop(); // Remove current state
+        const last = nextStack[nextStack.length - 1];
+        if (last) {
+          setActiveTab(last.tab);
+          if (last.subFeature && last.subFeature !== 'home') {
+            setActiveSubFeature(last.subFeature);
+          }
+        } else {
+          setActiveTab('home');
+        }
+        return nextStack;
+      });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      setActiveTab('home');
+    }
+  };
+
+  const canGoBack = navHistory.length > 1;
+
   // Suggested Student Profile Data State
   const [studentProfile, setStudentProfile] = useState(() => {
     try {
-      const saved = localStorage.getItem('skillora_student_profile');
+      const saved = localStorage.getItem('skillaura_student_profile');
       if (saved) return JSON.parse(saved);
     } catch (e) {}
 
@@ -68,7 +114,7 @@ export default function App() {
     setStudentProfile(prev => {
       const updated = { ...prev, ...updatedData };
       try {
-        localStorage.setItem('skillora_student_profile', JSON.stringify(updated));
+        localStorage.setItem('skillaura_student_profile', JSON.stringify(updated));
       } catch (e) {}
 
       fetch('http://localhost:5000/api/student/profile', {
@@ -86,14 +132,12 @@ export default function App() {
       setIsTranslatorOpen(true);
       return;
     }
-    setActiveSubFeature(subId);
-    setActiveTab('feature');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    navigateTo('feature', subId);
   };
 
   const handleLogout = () => {
-    alert("You have securely logged out from Skillora.");
-    setActiveTab('home');
+    alert("You have securely logged out from SkillAura.");
+    navigateTo('home', 'home');
   };
 
   return (
@@ -103,9 +147,10 @@ export default function App() {
       <Navbar 
         activeTab={activeTab}
         setActiveTab={(tab) => {
-          setActiveTab(tab);
           if (tab === 'home') {
-            setActiveSubFeature('home');
+            navigateTo('home', 'home');
+          } else {
+            navigateTo(tab, activeSubFeature);
           }
         }}
         language={language}
@@ -148,6 +193,8 @@ export default function App() {
               studentProfile={studentProfile}
               onNavigateProgress={() => handleSelectSubFeature('growth-map')}
               searchQuery={searchQuery}
+              onGoBack={handleGoBack}
+              canGoBack={canGoBack}
             />
           )}
 
@@ -156,6 +203,8 @@ export default function App() {
               subFeatureId={activeSubFeature}
               studentProfile={studentProfile}
               onNavigate={(tab) => handleSelectSubFeature(tab)}
+              onGoBack={handleGoBack}
+              canGoBack={canGoBack}
               onOpenTranslator={() => setIsTranslatorOpen(true)}
               onUpdateProfile={handleUpdateProfile}
               language={language}
